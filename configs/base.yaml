@@ -1,0 +1,77 @@
+# XRP Trading System - Base Configuration
+# FSM + DecisionEngine with Confirm Layer integration
+
+# Confirm Layer Configuration
+CONFIRM:
+  TF_DECISION: "15m"
+  BOX_LOOKBACK_15M: 32            # 6~8 hours (15m)
+  TREND_CONFIRM_B_ATR: 0.8        # theta_B
+  TREND_CONFIRM_S_ATR: 0.07       # theta_S (ema slope normalized)
+  TREND_CONFIRM_EWM_RET_SIGMA: 0.20  # theta_mu as 0.2*sigma
+  TREND_CONFIRM_CONSEC_BARS: 2
+
+  VOL_BASE_LOOKBACK_15M: 96       # 24h baseline window
+  HIGH_VOL_LAMBDA_ON: 5.5         # Entry: V > base + 5.5*MAD (top 3.6%)
+  HIGH_VOL_LAMBDA_OFF: 3.5        # Exit: V < base + 3.5*MAD
+  HIGH_VOL_STABLE_N: 2            # Fast exit (was 6)
+  HIGH_VOL_STABLE_K: 1            # Min decreasing bars (was 4)
+  HIGH_VOL_COOLDOWN_BARS_15M: 4   # 60m
+  HIGH_VOL_RETRIGGER_EXTEND: false  # Disable re-triggering
+
+# FSM Configuration (Signal Generator)
+FSM:
+  TF_ENTRY: "3m"
+  TF_CONTEXT: "15m"
+  EMA_FAST_3M: 20
+  EMA_SLOW_3M: 50
+  RSI_LEN_3M: 14
+  ATR_LEN_3M: 14
+
+  # Range (bounce)
+  RANGE_PULLBACK_ATR: 0.6
+  RANGE_MIN_ZONE_STRENGTH: 0.000010   # strength v2 band threshold
+  RANGE_MAX_SPREAD_ATR: 0.25          # slippage/spread limit
+
+  # Trend (pullback) - Tuned 2026-01-15
+  TREND_PULLBACK_TO_EMA_ATR: 2.0       # 0.5 -> 2.0 (wider pullback zone)
+  TREND_MIN_EMA_SLOPE_15M: 0.002       # 0.07 -> 0.002 (realistic threshold)
+  TREND_MIN_REBOUND_RET: 0.0003        # NEW: minimum rebound confirmation
+  TREND_REQUIRE_EMA_ALIGNMENT: true    # NEW: fast > slow for LONG
+  TREND_CONFIRM_REQUIRED: true         # confirmed_regime == TREND_UP/DOWN
+  TREND_CHASE_FORBIDDEN: true          # pullback required for entry
+
+  # Transition limits - DISABLED (losing money)
+  TRANSITION_ALLOW_BREAKOUT_ONLY: false   # Disabled 2026-01-15: TRANSITION losing $12/test
+  TRANSITION_SIZE_MULT: 0.4
+
+# Risk Management Configuration - Tuned 2026-01-15
+RISK:
+  BASE_SIZE_USDT: 100
+  MAX_LEVERAGE: 3
+  STOP_ATR_MULT: 1.5               # 1.2 -> 1.5 (wider stop)
+  TP_ATR_MULT: 2.0                 # 1.0 -> 2.0 (better RR ratio)
+  TRAIL_ATR_MULT: 1.0
+  MAX_HOLD_BARS_3M: 40             # 60 -> 40 (faster timeout)
+
+# Decision Engine Configuration
+DECISION:
+  DENY_IN_HIGH_VOL: true
+  DENY_IN_NO_TRADE: true
+  DENY_BREAKOUT_IN_COOLDOWN: true
+  COOLDOWN_SIZE_MULT: 0.5
+
+  # XGB gate filter (trained on Multi-HMM backtest trades)
+  XGB_ENABLED: true
+  XGB_PMIN_RANGE: 0.40
+  XGB_PMIN_TREND: 0.40
+
+# Zone Configuration (15m)
+zone:
+  atr_period: 14
+  radius_multiplier: 0.6
+  pad_multiplier: 0.4
+  pivot_lookback: 2
+  reaction_lookahead: 12
+  reaction_k_atr: 0.8
+  max_per_side: 6
+  decay_halflife_hours: 12.0

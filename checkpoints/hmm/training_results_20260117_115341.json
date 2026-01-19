@@ -1,0 +1,6 @@
+{
+  "hmm": {
+    "status": "failed",
+    "error": "'MultiHMMManager' object has no attribute '_current_run_id'"
+  }
+}

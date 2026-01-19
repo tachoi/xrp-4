@@ -1,0 +1,95 @@
+# hmm_features.yaml (v2)
+# 목적: HMM을 "regime detector(압축/확장/노이즈/전이)"로 고정하고,
+#      방향성/포지션(예: RSI, BB% position, composite_trend_strength)은 제거한다.
+# 원칙: 학습/추론에서 이 리스트와 100% 동일해야 함(추가/누락 금지).
+
+version: 2
+notes:
+  - "DO NOT add RSI / bb_pct / composite_trend_strength or other bounded direction scores."
+  - "Keep feature contract identical between training and inference."
+
+hmm:
+  fast_3m:
+    name: "fast_hmm_3m_v2"
+    timeframe: "3m"
+    features:
+      # Returns / expansion (2)
+      - ret_3m
+      - ewm_ret_15m
+
+      # Volatility (2)  — use 15m-based to reduce 3m noise & overconfidence
+      - atr_pct_15m
+      - ewm_std_ret_15m
+
+      # Compression / expansion (1)
+      - bb_width_15m
+
+      # Candle micro-structure (4)
+      - body_ratio
+      - upper_wick_ratio
+      - lower_wick_ratio
+      - range_pct
+
+    forbidden_features:
+      - rsi_14
+      - bb_pct
+      - atr_14
+      - composite_trend_strength
+
+  mid_15m:
+    name: "mid_hmm_15m_v2"
+    timeframe: "15m"
+    features:
+      # Returns (4) — add 1h context for stability
+      - ret_15m
+      - ewm_ret_15m
+      - ret_1h
+      - ewm_ret_1h
+
+      # Volatility (4) — 15m + 1h
+      - atr_pct_15m
+      - ewm_std_ret_15m
+      - atr_pct_1h
+      - ewm_std_ret_1h
+
+      # Compression (1)
+      - bb_width_15m
+
+      # Activity (1)
+      - vol_z_15m
+
+      # Distance from trend baseline (1) — "overextension" style, not BB position
+      - price_z_from_ema_1h
+
+    forbidden_features:
+      - trend_strength_15m
+      - range_comp_15m
+      - rsi_14_15m
+      - bb_pct_15m
+      - composite_trend_strength_15m
+
+# Optional: if you want a strict single-source-of-truth mapping by timeframe
+# (useful when your feature builder branches on timeframe)
+by_timeframe:
+  "3m":
+    - ret_3m
+    - body_ratio
+    - upper_wick_ratio
+    - lower_wick_ratio
+    - range_pct
+    - ewm_ret_15m
+    - atr_pct_15m
+    - ewm_std_ret_15m
+    - bb_width_15m
+  "15m":
+    - ret_15m
+    - ewm_ret_15m
+    - atr_pct_15m
+    - ewm_std_ret_15m
+    - bb_width_15m
+    - vol_z_15m
+    - ret_1h
+    - ewm_ret_1h
+    - atr_pct_1h
+    - ewm_std_ret_1h
+    - price_z_from_ema_1h

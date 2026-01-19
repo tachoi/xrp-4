@@ -1,0 +1,23 @@
+{
+  "total_trades": 366,
+  "winning_trades": 144,
+  "losing_trades": 222,
+  "win_rate": 39.34,
+  "total_pnl": -2158.8923,
+  "total_pnl_pct": -21.59,
+  "avg_pnl_per_trade": -5.8986,
+  "avg_win": 27.027,
+  "avg_loss": -27.2558,
+  "profit_factor": 0.64,
+  "max_drawdown": -2400.7057,
+  "max_drawdown_pct": -23.99,
+  "sharpe_ratio": 0.18,
+  "sortino_ratio": 0.31,
+  "avg_mfe": 0.024,
+  "avg_mae": 0.0185,
+  "avg_mfe_pct": 2.2224,
+  "avg_mae_pct": 1.8383,
+  "edge_ratio": 1.3,
+  "initial_capital": 10000.0,
+  "final_capital": 7841.11
+}

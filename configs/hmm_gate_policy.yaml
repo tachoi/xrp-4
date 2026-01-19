@@ -1,0 +1,167 @@
+# configs/hmm_gate_policy.yaml
+# HMM -> Gate Layer Policy Configuration
+# HMM 결과를 Gate 컨텍스트에 반영하는 정책 설정
+
+hmm_gate_policy:
+  enabled: true
+
+  # =========================================================================
+  # 불확실성 기준 (entropy / confidence)
+  # =========================================================================
+  # Structural HMM (15m) - 더 안정적이어야 함
+  entropy_high_struct: 1.10
+  conf_low_struct: 0.55
+
+  # Micro HMM (3m) - 빠른 변화 감지
+  entropy_high_micro: 0.95
+  conf_low_micro: 0.55
+
+  # =========================================================================
+  # 전환기 기준 (최근 N step 전이율)
+  # =========================================================================
+  trans_rate_high_struct: 0.35
+  trans_rate_high_micro: 0.45
+  trans_window_bars_3m: 20
+  trans_window_bars_15m: 10
+
+  # =========================================================================
+  # 정책 플래그 이름
+  # =========================================================================
+  flags:
+    uncertain: "HMM_UNCERTAIN"
+    transition: "HMM_TRANSITION"
+    range: "HMM_RANGE"
+    shock: "HMM_SHOCK"
+    trend_up: "HMM_TREND_UP"
+    trend_down: "HMM_TREND_DOWN"
+    avoid_breakout: "AVOID_BREAKOUT"
+    risk_off: "RISK_OFF_HMM"
+    deny_all: "DENY_ALL_HMM"
+    allow_bounce: "ALLOW_BOUNCE"
+
+  # =========================================================================
+  # 레짐별 정책 (Gate family는 바꾸지 않고 context만 추가)
+  # =========================================================================
+  regime_policy:
+    RANGE:
+      add_flags: ["HMM_RANGE", "AVOID_BREAKOUT"]
+      deny_breakout: true
+      risk_off: false
+      deny_all: false
+      allow_bounce: true
+      description: "Range 구간 - breakout 차단, bounce 허용"
+
+    TREND_UP:
+      add_flags: ["HMM_TREND_UP"]
+      deny_breakout: false
+      risk_off: false
+      deny_all: false
+      allow_bounce: false
+      description: "상승 추세 - 정상 거래"
+
+    TREND_DOWN:
+      add_flags: ["HMM_TREND_DOWN"]
+      deny_breakout: false
+      risk_off: false
+      deny_all: false
+      allow_bounce: false
+      description: "하락 추세 - 정상 거래"
+
+    TRANSITION:
+      add_flags: ["HMM_TRANSITION", "RISK_OFF_HMM"]
+      deny_breakout: true
+      risk_off: true
+      deny_all: false
+      allow_bounce: false
+      description: "전환 구간 - 리스크 감소, breakout 차단"
+
+    SHOCK:
+      add_flags: ["HMM_SHOCK", "DENY_ALL_HMM"]
+      deny_breakout: true
+      risk_off: true
+      deny_all: true
+      allow_bounce: false
+      description: "충격 구간 - 모든 거래 차단"
+
+    UNKNOWN:
+      add_flags: ["HMM_UNCERTAIN"]
+      deny_breakout: true
+      risk_off: true
+      deny_all: false
+      allow_bounce: false
+      description: "불확실 - 리스크 감소"
+
+  # =========================================================================
+  # 우선순위 (높을수록 먼저 적용)
+  # =========================================================================
+  priority:
+    SHOCK: 100
+    TRANSITION: 80
+    RANGE: 60
+    TREND_UP: 40
+    TREND_DOWN: 40
+    UNKNOWN: 20
+
+  # =========================================================================
+  # Gate-first Policy (V2) - Gate가 macro regime 권한자
+  # =========================================================================
+  policy:
+    gate_first: true
+
+    unknown_mode: "NO_TRADE"       # "NO_TRADE" or "RISK_OFF"
+    shock_mode: "DENY_ALL"
+    transition_mode: "RISK_OFF"
+
+    # SIDE subtype classification thresholds (z-scored features)
+    side:
+      # Volatility thresholds for z-scored features
+      bb_width_z_low: -0.5         # Below this = COMPRESSED
+      bb_width_z_high: 0.5         # Above this = CHOPPY
+      atr_z_low: -0.5              # Below this = COMPRESSED
+      atr_z_high: 0.5              # Above this = CHOPPY
+      chop_high: 55                # High choppiness indicator
+
+      subtype:
+        compressed:
+          size_mult: 1.0
+          allow_engines: ["BOUNCE"]
+        choppy:
+          size_mult: 0.6
+          allow_engines: ["BOUNCE"]
+        pre_breakout:
+          size_mult: 0.8
+          allow_engines: ["BOUNCE"]
+        transition:
+          size_mult: 0.4
+          allow_engines: []
+
+    # TREND parameters
+    trend:
+      size_mult: 1.0
+      prefer_mid: true             # Prefer mid HMM for direction
+      entropy_min_reliable: 0.02
+      entropy_max_reliable: 0.80
+
+  # =========================================================================
+  # HMM 모델 설정
+  # =========================================================================
+  hmm_config:
+    fast:
+      timeframe: "3m"
+      n_states: 4
+      features: null  # configs/hmm_features.yaml에서 로드
+      lookback_bars: 100
+      covariance_type: "diag"
+
+    mid:
+      timeframe: "15m"
+      n_states: 4
+      features: null  # configs/hmm_features.yaml에서 로드
+      lookback_bars: 50
+      covariance_type: "diag"
+
+    fusion:
+      method: "weighted"  # weighted, voting, hierarchical
+      fast_weight: 0.4
+      mid_weight: 0.6
+      conflict_resolution: "mid_priority"  # mid_priority, fast_priority, conservative

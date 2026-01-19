@@ -1,0 +1,16 @@
+{
+  "session_id": "20260116_172342",
+  "symbol": "XRPUSDT",
+  "start_time": null,
+  "end_time": "2026-01-16T19:22:51.729944",
+  "initial_capital": 10000.0,
+  "final_equity": 10000.0,
+  "return_pct": 0.0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "win_rate": 0,
+  "total_pnl": 0.0,
+  "open_position": null,
+  "trades": []
+}

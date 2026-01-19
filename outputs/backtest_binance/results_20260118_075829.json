@@ -1,0 +1,79 @@
+{
+  "baseline": {
+    "use_tick_features": false,
+    "leverage": 1.0,
+    "initial_capital": 10000.0,
+    "final_equity": 10398.261354009135,
+    "return_pct": 3.982613540091351,
+    "total_trades": 387,
+    "winning_trades": 189,
+    "win_rate": 48.837209302325576,
+    "total_pnl": 2052.7176900740333,
+    "profit_factor": 1.17070642616167,
+    "max_drawdown_pct": 16.008388847085605,
+    "tick_stats": {
+      "sudden_moves_detected": 0,
+      "emergency_exits": 0,
+      "optimized_entries": 0,
+      "total_improvement": 0.0
+    },
+    "avg_entry_improvement_pct": 0,
+    "regime_stats": {
+      "TREND_DOWN": {
+        "trades": 205,
+        "wins": 111,
+        "pnl": 2836.4736977704006,
+        "win_rate": 54.146341463414636,
+        "avg_pnl": 13.836457062294636
+      },
+      "TREND_UP": {
+        "trades": 182,
+        "wins": 78,
+        "pnl": -783.7560076963684,
+        "win_rate": 42.857142857142854,
+        "avg_pnl": -4.306351690639387
+      }
+    }
+  },
+  "with_tick_features": {
+    "use_tick_features": true,
+    "leverage": 1.0,
+    "initial_capital": 10000.0,
+    "final_equity": 19993.735830110516,
+    "return_pct": 99.93735830110515,
+    "total_trades": 445,
+    "winning_trades": 275,
+    "win_rate": 61.79775280898876,
+    "total_pnl": 12637.294450937543,
+    "profit_factor": 2.251848534723716,
+    "max_drawdown_pct": 3.651771342553272,
+    "tick_stats": {
+      "sudden_moves_detected": 1078,
+      "emergency_exits": 100,
+      "optimized_entries": 446,
+      "total_improvement": 0.7465405303299805
+    },
+    "avg_entry_improvement_pct": 0.16738576913228262,
+    "regime_stats": {
+      "TREND_DOWN": {
+        "trades": 228,
+        "wins": 139,
+        "pnl": 8081.9934148335,
+        "win_rate": 60.96491228070175,
+        "avg_pnl": 35.44733953874342
+      },
+      "TREND_UP": {
+        "trades": 217,
+        "wins": 136,
+        "pnl": 4555.301036104053,
+        "win_rate": 62.67281105990783,
+        "avg_pnl": 20.99217067329057
+      }
+    }
+  },
+  "improvement": {
+    "return_pct": 95.9547447610138,
+    "profit_factor": 1.0811421085620458,
+    "win_rate": 12.960543506663186
+  }
+}

@@ -1,0 +1,98 @@
+# XRP Core Trading System - Default Configuration
+# 15m zones gate 3m FSM execution
+
+# 15m Zone Configuration
+zone:
+  # ATR period for zone calculations
+  atr_period: 14
+
+  # Zone radius = radius_multiplier * ATR_15m
+  radius_multiplier: 0.6
+
+  # NEAR band pad = pad_multiplier * ATR_15m
+  pad_multiplier: 0.4
+
+  # Swing pivot left/right window
+  pivot_lookback: 2
+
+  # 15m candles to confirm reaction
+  reaction_lookahead: 12
+
+  # Rebound >= k * ATR counts as reaction
+  reaction_k_atr: 0.8
+
+  # Keep top zones by strength per side
+  max_per_side: 6
+
+  # Exponential decay half-life for zone strength
+  decay_halflife_hours: 12.0
+
+# 3m FSM Configuration
+fsm:
+  # EMA period for 3m charts
+  ema_period: 20
+
+  # RSI period
+  rsi_period: 14
+
+  # ATR period for 3m
+  atr_period: 14
+
+  # Anchor volume threshold: vol >= mult * SMA(vol)
+  anchor_vol_mult: 2.5
+
+  # Volume SMA period for anchor detection
+  anchor_vol_sma_n: 50
+
+  # Anchor body threshold: body >= mult * ATR
+  anchor_body_atr_mult: 1.2
+
+  # Chase filter: abs(price - EMA) / ATR <= Dmax
+  chase_dist_max_atr: 1.5
+
+  # Anchor expiry in 3m candles (4 = 12 minutes)
+  anchor_expire_candles: 4
+
+  # Max hold time in 3m candles (6 = 18 minutes)
+  hold_max_candles: 6
+
+  # Cooldown after exit in 3m candles
+  cooldown_candles: 3
+
+  # Pullback tolerance: abs(price - A_mid) <= tol * ATR
+  pullback_tolerance_atr: 0.5
+
+# Phenomenon Conditions Configuration
+phenomena:
+  # Lookback for mean calculations
+  lookback_k: 8
+
+  # Low fail detection mode
+  low_fail_mode: "2of4"
+
+  # Lower wick ratio minimum
+  lower_wick_ratio_min: 0.4
+
+  # Body shrink factor: body <= factor * mean(body)
+  body_shrink_factor: 0.5
+
+  # Range shrink factor: range <= factor * mean(range)
+  range_shrink_factor: 0.7
+
+  # Minimum phenomena checks required (out of 4)
+  requirements_min_count: 3
+
+# Risk Management Configuration
+risk:
+  # Risk per trade as percentage of equity
+  risk_per_trade_pct: 0.3
+
+  # Daily maximum loss percentage
+  daily_max_loss_pct: 2.0
+
+  # Size reduction multipliers as daily loss approaches limit
+  # First value: used at 50-75% of limit
+  # Second value: used at 75%+ of limit
+  drawdown_size_reduce_steps:
+    - 0.5
+    - 0.3

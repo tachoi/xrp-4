@@ -1,0 +1,40 @@
+# XRP Core Trading System - Relaxed Configuration
+# More trades for testing (less strict conditions)
+
+zone:
+  atr_period: 14
+  radius_multiplier: 0.8      # Wider zones
+  pad_multiplier: 0.5         # Wider NEAR band
+  pivot_lookback: 2
+  reaction_lookahead: 12
+  reaction_k_atr: 0.6         # Lower reaction threshold
+  max_per_side: 8
+  decay_halflife_hours: 24.0  # Slower decay
+
+fsm:
+  ema_period: 20
+  rsi_period: 14
+  atr_period: 14
+  anchor_vol_mult: 2.0        # Lower volume threshold (was 2.5)
+  anchor_vol_sma_n: 50
+  anchor_body_atr_mult: 1.0   # Lower body threshold (was 1.2)
+  chase_dist_max_atr: 2.0     # More lenient chase filter (was 1.5)
+  anchor_expire_candles: 6    # Longer expiry (was 4)
+  hold_max_candles: 10        # Longer hold (was 6)
+  cooldown_candles: 2         # Shorter cooldown (was 3)
+  pullback_tolerance_atr: 0.7 # More lenient pullback (was 0.5)
+
+phenomena:
+  lookback_k: 8
+  low_fail_mode: "2of4"
+  lower_wick_ratio_min: 0.3   # Lower threshold (was 0.4)
+  body_shrink_factor: 0.6     # More lenient (was 0.5)
+  range_shrink_factor: 0.8    # More lenient (was 0.7)
+  requirements_min_count: 2   # Only need 2 of 4 (was 3)
+
+risk:
+  risk_per_trade_pct: 0.5     # Higher risk per trade
+  daily_max_loss_pct: 3.0
+  drawdown_size_reduce_steps:
+    - 0.5
+    - 0.3

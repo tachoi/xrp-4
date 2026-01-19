@@ -1,0 +1,6 @@
+{
+  "xgb": {
+    "status": "failed",
+    "error": "No columns to parse from file"
+  }
+}

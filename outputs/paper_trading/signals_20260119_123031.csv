@@ -1,0 +1,2 @@
+timestamp,event_type,price,regime_raw,regime_confirmed,confirm_reason,signal,signal_reason,signal_score,action,decision_reason,position,unrealized_pnl,ema_fast,ema_slow,atr,rsi
+2026-01-19T12:33:05.683795,INITIAL,1.9544,TREND_DOWN,TREND_DOWN,TREND_DOWN_VALIDATED,HOLD,TREND_DOWN_NO_REJECTION,0.000,NO_ACTION,DE_HOLD,FLAT,0.00,1.9553,1.9579,0.002929,43.9

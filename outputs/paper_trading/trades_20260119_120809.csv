@@ -1,0 +1,2 @@
+timestamp,side,entry_price,exit_price,size,pnl,pnl_pct,bars_held,equity_after
+2026-01-19T12:18:06.132550,SHORT,1.9548,1.9583,25578.0643,-109.56,-0.22,3,9870.44

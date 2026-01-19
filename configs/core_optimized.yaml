@@ -1,0 +1,43 @@
+# XRP Core Trading System - Optimized Configuration
+# Optimized on: 2024-07-01 to 2025-07-01 (1 year training)
+# Validated on: 2025-07-01 to 2026-01-01 (6 months validation)
+# Training: PnL +4.83%, 20 trades, PF 2.92
+# Validation: PnL +0.76%, 6 trades, PF 4.88
+
+zone:
+  atr_period: 14
+  radius_multiplier: 0.6
+  pad_multiplier: 0.4
+  pivot_lookback: 2
+  reaction_lookahead: 12
+  reaction_k_atr: 0.8
+  max_per_side: 6
+  decay_halflife_hours: 12.0
+
+fsm:
+  ema_period: 20
+  rsi_period: 14
+  atr_period: 14
+  anchor_vol_mult: 1.5          # Lower = more sensitive to volume spikes
+  anchor_vol_sma_n: 50
+  anchor_body_atr_mult: 1.2     # Higher = stricter anchor body requirement (less overfitting)
+  chase_dist_max_atr: 1.5
+  anchor_expire_candles: 4
+  hold_max_candles: 12          # Hold up to 36 minutes
+  cooldown_candles: 3
+  pullback_tolerance_atr: 0.6   # Tighter pullback tolerance
+
+phenomena:
+  lookback_k: 8
+  low_fail_mode: "2of4"
+  lower_wick_ratio_min: 0.4
+  body_shrink_factor: 0.5
+  range_shrink_factor: 0.7
+  requirements_min_count: 1     # Only need 1 of 4 phenomena conditions
+
+risk:
+  risk_per_trade_pct: 0.3
+  daily_max_loss_pct: 2.0
+  drawdown_size_reduce_steps:
+    - 0.5
+    - 0.3

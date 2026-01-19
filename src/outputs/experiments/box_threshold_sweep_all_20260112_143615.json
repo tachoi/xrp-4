@@ -1,0 +1,42 @@
+[
+  {
+    "min_height_atr": 1.5,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  },
+  {
+    "min_height_atr": 2.0,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  },
+  {
+    "min_height_atr": 2.5,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  },
+  {
+    "min_height_atr": 3.0,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  },
+  {
+    "min_height_atr": 3.5,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  },
+  {
+    "min_height_atr": 4.0,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  },
+  {
+    "min_height_atr": 5.0,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  },
+  {
+    "min_height_atr": 6.0,
+    "signal_mode": "all",
+    "error": "non-default argument 'sl_band_atr_k' follows default argument"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "best_strategy": {
+    "id": 3,
+    "type": "breakout",
+    "params": {
+      "entry_strategy": "breakout",
+      "min_confidence": 0.6,
+      "sl_mult_trend": 2.5,
+      "tp_mult_trend": 4.0,
+      "use_trailing_stop": false,
+      "momentum_threshold": 0.0,
+      "volume_z_threshold": 0.0,
+      "trend_strength_threshold": 0.0,
+      "max_hold_bars": 0
+    }
+  },
+  "validation_results": {
+    "final_equity": 10000.0,
+    "total_return_pct": 0.0,
+    "n_trades": 0,
+    "win_rate": 0,
+    "profit_factor": 0,
+    "max_drawdown_pct": 0,
+    "avg_bars_held": 0
+  },
+  "test_results": {
+    "final_equity": 10000.0,
+    "total_return_pct": 0.0,
+    "n_trades": 0,
+    "win_rate": 0,
+    "profit_factor": 0,
+    "max_drawdown_pct": 0,
+    "avg_bars_held": 0
+  }
+}

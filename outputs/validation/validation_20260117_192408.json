@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-01-17T19:24:08.351542",
+  "overall_status": "FAILED",
+  "total_passed": 9,
+  "total_failed": 5,
+  "sections": [
+    {
+      "name": "HMM State Labeling",
+      "status": "FAILED",
+      "passed": 2,
+      "failed": 1,
+      "errors": [
+        "MidHMM: Duplicate labels: {0: <RegimeLabel.TRANSITION: 'TRANSITION'>, 2: <RegimeLabel.RANGE: 'RANGE'>, 1: <RegimeLabel.TREND_DOWN: 'TREND_DOWN'>, 3: <RegimeLabel.TREND_DOWN: 'TREND_DOWN'>}"
+      ]
+    },
+    {
+      "name": "Confirm Layer RANGE Validation",
+      "status": "FAILED",
+      "passed": 0,
+      "failed": 4,
+      "errors": [
+        "RANGE not validated: HIGH_VOL, HIGH_VOL_ACTIVE",
+        "RANGE not overridden to TREND_UP: HIGH_VOL",
+        "RANGE not overridden to TREND_DOWN: HIGH_VOL",
+        "RANGE not overridden to TRANSITION: HIGH_VOL"
+      ]
+    },
+    {
+      "name": "XGB Feature Extraction",
+      "status": "PASSED",
+      "passed": 5,
+      "failed": 0,
+      "errors": []
+    },
+    {
+      "name": "HMM Fusion",
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "objective": "profit_factor",
+  "param_groups": [
+    "fsm",
+    "risk"
+  ],
+  "best_params": {
+    "TREND_PULLBACK_TO_EMA_ATR": 3.5,
+    "TREND_MIN_EMA_SLOPE_15M": 0.007,
+    "TREND_MIN_REBOUND_RET": 0.0001,
+    "SHORT_PULLBACK_TO_EMA_ATR": 0.5,
+    "SHORT_MIN_EMA_SLOPE_15M": 0.002,
+    "SHORT_MIN_REJECTION_RET": 0.0009,
+    "SHORT_CONSEC_NEG_BARS": 3,
+    "SHORT_PEAK_CONFIRM_BARS": 4,
+    "RANGE_PULLBACK_ATR": 0.3,
+    "RANGE_MIN_ZONE_STRENGTH": 5.558690234030934e-06,
+    "STOP_ATR_MULT": 1.25,
+    "TP_ATR_MULT": 1.5,
+    "TRAIL_ATR_MULT": 1.5,
+    "MAX_HOLD_BARS_3M": 20,
+    "SHORT_MAX_HOLD_BARS_3M": 35
+  },
+  "train_value": 1.1324314824380854,
+  "test_result": {
+    "n_trades": 180,
+    "profit_factor": 0.8208984019456623,
+    "win_rate": 55.55555555555556,
+    "return_pct": -14.056010521203643,
+    "sharpe_ratio": -3.4345485572626098,
+    "max_drawdown": 20.620105534717002,
+    "avg_trade_pnl": -4.196863274218966,
+    "final_equity": 8594.398947879636
+  },
+  "n_trials": 100,
+  "train_ratio": 0.7,
+  "leverage": 1.0
+}

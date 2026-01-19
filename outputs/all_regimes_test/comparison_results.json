@@ -1,0 +1,71 @@
+{
+  "test_period": "2024-07-01 ~ 2026-01-15",
+  "current_config": {
+    "n_trades": 1490,
+    "win_rate": 49.261744966442954,
+    "total_pnl": 195.32109033040143,
+    "profit_factor": 1.744870832267717,
+    "regime_stats": {
+      "TREND_DOWN": {
+        "n_trades": 428,
+        "win_rate": 54.4392523364486,
+        "total_pnl": 43.1437577622412
+      },
+      "TREND_UP": {
+        "n_trades": 1062,
+        "win_rate": 47.175141242937855,
+        "total_pnl": 152.1773325681601
+      }
+    }
+  },
+  "all_regimes": {
+    "n_trades": 2468,
+    "win_rate": 52.10696920583469,
+    "total_pnl": 127.64131928982155,
+    "profit_factor": 1.2442974870999828,
+    "regime_stats": {
+      "RANGE": {
+        "n_trades": 1166,
+        "win_rate": 56.00343053173242,
+        "total_pnl": 15.812064429788828
+      },
+      "TREND_DOWN": {
+        "n_trades": 390,
+        "win_rate": 54.1025641025641,
+        "total_pnl": 34.23003860777667
+      },
+      "TREND_UP": {
+        "n_trades": 912,
+        "win_rate": 46.271929824561404,
+        "total_pnl": 77.59921625225604
+      }
+    },
+    "signal_stats": {
+      "LONG_BOUNCE": {
+        "n_trades": 405,
+        "win_rate": 58.0246913580247,
+        "total_pnl": 10.388429772398865
+      },
+      "SHORT_BOUNCE": {
+        "n_trades": 760,
+        "win_rate": 55.00000000000001,
+        "total_pnl": 5.696996913355271
+      },
+      "SHORT_TREND_PULLBACK": {
+        "n_trades": 390,
+        "win_rate": 54.1025641025641,
+        "total_pnl": 34.23003860777667
+      },
+      "LONG_TREND_PULLBACK": {
+        "n_trades": 912,
+        "win_rate": 46.271929824561404,
+        "total_pnl": 77.59921625225604
+      },
+      "EOD": {
+        "n_trades": 1,
+        "win_rate": 0.0,
+        "total_pnl": -0.2733622559652978
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+# Environment
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated outputs (can be regenerated)
+outputs/paper_trading/*.csv
+outputs/paper_trading/*.json
+
+# Temporary files
+*.tmp
+*.log
+/tmp/
+
+# Jupyter
+.ipynb_checkpoints/

@@ -1,0 +1,2 @@
+timestamp,price,regime_raw,regime_confirmed,confirm_reason,signal,signal_reason,signal_score,action,decision_reason,position,unrealized_pnl,ema_fast,ema_slow,atr,rsi
+2026-01-16T13:27:04.080983,2.0695,TREND_DOWN,TREND_DOWN,TREND_DOWN_PASSTHROUGH,HOLD,TREND_DOWN_WEAK_SLOPE,0.000,NO_ACTION,DE_HOLD,FLAT,0.00,2.0691,2.0712,0.001514,54.9

@@ -1,0 +1,10 @@
+{
+  "hmm": {
+    "status": "success",
+    "run_id": "20260117_122107"
+  },
+  "xgb": {
+    "status": "success",
+    "model_path": "/mnt/c/Users/tae am choi/xrp-4/outputs/xgb_gate/xgb_model.json"
+  }
+}

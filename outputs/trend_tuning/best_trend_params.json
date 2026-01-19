@@ -1,0 +1,24 @@
+{
+  "best_params": {
+    "TREND_PULLBACK_TO_EMA_ATR": 2.0,
+    "TREND_MIN_EMA_SLOPE_15M": 0.002,
+    "MIN_REBOUND_RET": 0.0003,
+    "REQUIRE_EMA_ALIGNMENT": true,
+    "STOP_ATR_MULT": 1.5,
+    "TP_ATR_MULT": 2.0
+  },
+  "best_metrics": {
+    "n_trades": 778,
+    "win_rate": 32.26221079691517,
+    "return_pct": 79.22641014232525,
+    "profit_factor": 1.3275226098240875,
+    "expectancy": 0.10183343205954391,
+    "trend_up_trades": 572,
+    "trend_up_wr": 29.37062937062937,
+    "trend_up_pnl": 49.83329237167221,
+    "trend_down_trades": 206,
+    "trend_down_wr": 40.29126213592233,
+    "trend_down_pnl": 29.393117770652978
+  },
+  "timestamp": "2026-01-15T12:04:23.965681"
+}

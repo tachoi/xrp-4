@@ -1,0 +1,182 @@
+[
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 12,
+      "pullback_tolerance_atr": 0.8
+    },
+    "total_pnl_pct": 8.359931136696671,
+    "win_rate": 44.047619047619044,
+    "total_trades": 84,
+    "wins": 37,
+    "losses": 47,
+    "anchors": 233,
+    "sharpe_approx": 0.047432588222708925,
+    "profit_factor": 1.7775630384735515,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 16,
+      "pullback_tolerance_atr": 0.6
+    },
+    "total_pnl_pct": 8.039519638072667,
+    "win_rate": 41.509433962264154,
+    "total_trades": 53,
+    "wins": 22,
+    "losses": 31,
+    "anchors": 240,
+    "sharpe_approx": 0.06891671366651535,
+    "profit_factor": 2.204084971528976,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 12,
+      "pullback_tolerance_atr": 0.6
+    },
+    "total_pnl_pct": 7.888693865250187,
+    "win_rate": 41.81818181818181,
+    "total_trades": 55,
+    "wins": 23,
+    "losses": 32,
+    "anchors": 242,
+    "sharpe_approx": 0.11313985272432343,
+    "profit_factor": 2.307890946250118,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 12,
+      "pullback_tolerance_atr": 1.0
+    },
+    "total_pnl_pct": 7.56723797498106,
+    "win_rate": 42.05607476635514,
+    "total_trades": 107,
+    "wins": 45,
+    "losses": 62,
+    "anchors": 234,
+    "sharpe_approx": 0.033192459298086625,
+    "profit_factor": 1.5223037882174228,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 16,
+      "pullback_tolerance_atr": 0.8
+    },
+    "total_pnl_pct": 7.556642816779008,
+    "win_rate": 46.34146341463415,
+    "total_trades": 82,
+    "wins": 38,
+    "losses": 44,
+    "anchors": 230,
+    "sharpe_approx": 0.03679375066541985,
+    "profit_factor": 1.659369177528019,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 16,
+      "pullback_tolerance_atr": 1.0
+    },
+    "total_pnl_pct": 6.1678127054920076,
+    "win_rate": 43.80952380952381,
+    "total_trades": 105,
+    "wins": 46,
+    "losses": 59,
+    "anchors": 231,
+    "sharpe_approx": 0.023361671667837265,
+    "profit_factor": 1.3858214260707102,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 1.0,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 12,
+      "pullback_tolerance_atr": 0.6
+    },
+    "total_pnl_pct": 4.855594853160847,
+    "win_rate": 36.11111111111111,
+    "total_trades": 36,
+    "wins": 13,
+    "losses": 23,
+    "anchors": 179,
+    "sharpe_approx": 0.09133855580978545,
+    "profit_factor": 2.2067749119120315,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 1.2,
+      "phenomena_min_count": 1,
+      "hold_max_candles": 12,
+      "pullback_tolerance_atr": 0.6
+    },
+    "total_pnl_pct": 4.833878941499935,
+    "win_rate": 40.0,
+    "total_trades": 20,
+    "wins": 8,
+    "losses": 12,
+    "anchors": 122,
+    "sharpe_approx": 0.2514226548664985,
+    "profit_factor": 2.919474662171403,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 2,
+      "hold_max_candles": 16,
+      "pullback_tolerance_atr": 0.8
+    },
+    "total_pnl_pct": 4.703520587460176,
+    "win_rate": 48.484848484848484,
+    "total_trades": 66,
+    "wins": 32,
+    "losses": 34,
+    "anchors": 232,
+    "sharpe_approx": 0.038217925049060734,
+    "profit_factor": 1.5556740721559073,
+    "max_consecutive_losses": 0
+  },
+  {
+    "params": {
+      "anchor_vol_mult": 1.5,
+      "anchor_body_atr_mult": 0.8,
+      "phenomena_min_count": 2,
+      "hold_max_candles": 16,
+      "pullback_tolerance_atr": 0.6
+    },
+    "total_pnl_pct": 4.591762163988796,
+    "win_rate": 41.86046511627907,
+    "total_trades": 43,
+    "wins": 18,
+    "losses": 25,
+    "anchors": 240,
+    "sharpe_approx": 0.046320631584648345,
+    "profit_factor": 1.9174443011674212,
+    "max_consecutive_losses": 0
+  }
+]

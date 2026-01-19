@@ -1,0 +1,25 @@
+{
+  "session_id": "20260117_225020",
+  "symbol": "XRPUSDT",
+  "start_time": null,
+  "end_time": "2026-01-18T07:15:25.389681",
+  "initial_capital": 10000.0,
+  "final_equity": 10000.0,
+  "return_pct": 0.0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "win_rate": 0,
+  "total_pnl": 0.0,
+  "open_position": null,
+  "entry_timing_5s": {
+    "total_attempts": 0,
+    "skipped_chasing": 0,
+    "skip_rate_pct": 0.0,
+    "executed": 0,
+    "improved_entry": 0,
+    "improve_rate_pct": 0.0,
+    "avg_saved_pct": 0.0
+  },
+  "trades": []
+}

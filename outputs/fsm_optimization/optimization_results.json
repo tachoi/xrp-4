@@ -1,0 +1,286 @@
+{
+  "best_params": {
+    "TREND_PULLBACK_TO_EMA_ATR": 1.5,
+    "MAX_HOLD_BARS_3M": 60
+  },
+  "current_params": {
+    "TREND_PULLBACK_TO_EMA_ATR": 2.0,
+    "TREND_MIN_EMA_SLOPE_15M": 0.002,
+    "TREND_MIN_REBOUND_RET": 0.0003,
+    "MAX_HOLD_BARS_3M": 40
+  },
+  "train_comparison": {
+    "current": {
+      "n_trades": 1032,
+      "total_pnl": 25302.202998313314,
+      "return_pct": 97.36157756738878,
+      "win_rate": 49.7093023255814,
+      "profit_factor": 1.7109913670866224,
+      "avg_win_pct": 0.8176958004751502,
+      "avg_loss_pct": -0.4468347142402363,
+      "final_equity": 19736.157756738878
+    },
+    "optimized": {
+      "n_trades": 931,
+      "total_pnl": 28036.57765018409,
+      "return_pct": 124.63230423093312,
+      "win_rate": 49.838882921589686,
+      "profit_factor": 1.7873340671580886,
+      "avg_win_pct": 0.8604232916875306,
+      "avg_loss_pct": -0.4459426501470849,
+      "final_equity": 22463.23042309331,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 1.5,
+        "MAX_HOLD_BARS_3M": 60
+      }
+    }
+  },
+  "test_comparison": {
+    "current": {
+      "n_trades": 477,
+      "total_pnl": 2196.464924708099,
+      "return_pct": -16.894010980964378,
+      "win_rate": 47.79874213836478,
+      "profit_factor": 1.2980672910955242,
+      "avg_win_pct": 0.5263234195968185,
+      "avg_loss_pct": -0.36277029896127105,
+      "final_equity": 8310.598901903562
+    },
+    "optimized": {
+      "n_trades": 409,
+      "total_pnl": 2488.9966851522418,
+      "return_pct": -9.48270761269585,
+      "win_rate": 48.655256723716384,
+      "profit_factor": 1.374758884527336,
+      "avg_win_pct": 0.5571115438404185,
+      "avg_loss_pct": -0.3762195325548918,
+      "final_equity": 9051.729238730415
+    }
+  },
+  "all_results": [
+    {
+      "n_trades": 931,
+      "total_pnl": 28036.57765018409,
+      "return_pct": 124.63230423093312,
+      "win_rate": 49.838882921589686,
+      "profit_factor": 1.7873340671580886,
+      "avg_win_pct": 0.8604232916875306,
+      "avg_loss_pct": -0.4459426501470849,
+      "final_equity": 22463.23042309331,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 1.5,
+        "MAX_HOLD_BARS_3M": 60
+      }
+    },
+    {
+      "n_trades": 1027,
+      "total_pnl": 29371.250704019018,
+      "return_pct": 124.63627668486774,
+      "win_rate": 49.5618305744888,
+      "profit_factor": 1.7748101575557995,
+      "avg_win_pct": 0.8384745777502367,
+      "avg_loss_pct": -0.4361775088815214,
+      "final_equity": 22463.627668486773,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.0,
+        "MAX_HOLD_BARS_3M": 60
+      }
+    },
+    {
+      "n_trades": 933,
+      "total_pnl": 25405.949454915903,
+      "return_pct": 105.89858114473508,
+      "win_rate": 49.62486602357985,
+      "profit_factor": 1.7411922552083192,
+      "avg_win_pct": 0.8488991440733387,
+      "avg_loss_pct": -0.44936258274483387,
+      "final_equity": 20589.858114473507,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 1.5,
+        "MAX_HOLD_BARS_3M": 50
+      }
+    },
+    {
+      "n_trades": 1029,
+      "total_pnl": 26638.226992541804,
+      "return_pct": 105.69152645875282,
+      "win_rate": 49.36831875607386,
+      "profit_factor": 1.730875441086115,
+      "avg_win_pct": 0.82792797030287,
+      "avg_loss_pct": -0.4395259921549223,
+      "final_equity": 20569.15264587528,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.0,
+        "MAX_HOLD_BARS_3M": 50
+      }
+    },
+    {
+      "n_trades": 936,
+      "total_pnl": 24250.21697447059,
+      "return_pct": 98.39737740357468,
+      "win_rate": 50.0,
+      "profit_factor": 1.721939336790583,
+      "avg_win_pct": 0.8375944409136297,
+      "avg_loss_pct": -0.45671670544591464,
+      "final_equity": 19839.73774035747,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 1.5,
+        "MAX_HOLD_BARS_3M": 40
+      }
+    },
+    {
+      "n_trades": 1032,
+      "total_pnl": 25302.202998313314,
+      "return_pct": 97.36157756738878,
+      "win_rate": 49.7093023255814,
+      "profit_factor": 1.7109913670866224,
+      "avg_win_pct": 0.8176958004751502,
+      "avg_loss_pct": -0.4468347142402363,
+      "final_equity": 19736.157756738878,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.0,
+        "MAX_HOLD_BARS_3M": 40
+      }
+    },
+    {
+      "n_trades": 1084,
+      "total_pnl": 27773.753064660035,
+      "return_pct": 107.38238462852286,
+      "win_rate": 48.708487084870846,
+      "profit_factor": 1.7095481242624222,
+      "avg_win_pct": 0.8423244606756304,
+      "avg_loss_pct": -0.4429453173363809,
+      "final_equity": 20738.238462852285,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.5,
+        "MAX_HOLD_BARS_3M": 60
+      }
+    },
+    {
+      "n_trades": 1100,
+      "total_pnl": 27498.09273461531,
+      "return_pct": 103.84976410912998,
+      "win_rate": 48.90909090909091,
+      "profit_factor": 1.6991972643092008,
+      "avg_win_pct": 0.8318115279774153,
+      "avg_loss_pct": -0.44347934866340755,
+      "final_equity": 20384.976410912997,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 3.0,
+        "MAX_HOLD_BARS_3M": 60
+      }
+    },
+    {
+      "n_trades": 943,
+      "total_pnl": 22722.708386210372,
+      "return_pct": 86.51766918271208,
+      "win_rate": 50.05302226935313,
+      "profit_factor": 1.6854854938689143,
+      "avg_win_pct": 0.8253820650165424,
+      "avg_loss_pct": -0.4610452560766578,
+      "final_equity": 18651.76691827121,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 1.5,
+        "MAX_HOLD_BARS_3M": 30
+      }
+    },
+    {
+      "n_trades": 1042,
+      "total_pnl": 23768.360530868886,
+      "return_pct": 85.6497643413972,
+      "win_rate": 49.90403071017274,
+      "profit_factor": 1.675108865044896,
+      "avg_win_pct": 0.8050609751643791,
+      "avg_loss_pct": -0.45307914780280373,
+      "final_equity": 18564.97643413972,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.0,
+        "MAX_HOLD_BARS_3M": 30
+      }
+    },
+    {
+      "n_trades": 1087,
+      "total_pnl": 25140.534991106397,
+      "return_pct": 90.03618424791803,
+      "win_rate": 48.5740570377185,
+      "profit_factor": 1.672185167065268,
+      "avg_win_pct": 0.830345258944969,
+      "avg_loss_pct": -0.44548930839215656,
+      "final_equity": 19003.618424791803,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.5,
+        "MAX_HOLD_BARS_3M": 50
+      }
+    },
+    {
+      "n_trades": 1103,
+      "total_pnl": 24852.50495328763,
+      "return_pct": 86.46287967326556,
+      "win_rate": 48.77606527651859,
+      "profit_factor": 1.6615796822456992,
+      "avg_win_pct": 0.8197656836604278,
+      "avg_loss_pct": -0.44605490945130605,
+      "final_equity": 18646.287967326556,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 3.0,
+        "MAX_HOLD_BARS_3M": 50
+      }
+    },
+    {
+      "n_trades": 1090,
+      "total_pnl": 23758.250101449354,
+      "return_pct": 81.73618886024887,
+      "win_rate": 48.89908256880734,
+      "profit_factor": 1.6524977172480033,
+      "avg_win_pct": 0.8201393937072726,
+      "avg_loss_pct": -0.4526246402063408,
+      "final_equity": 18173.618886024888,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.5,
+        "MAX_HOLD_BARS_3M": 40
+      }
+    },
+    {
+      "n_trades": 1106,
+      "total_pnl": 23571.50995974212,
+      "return_pct": 79.07349284624074,
+      "win_rate": 49.09584086799277,
+      "profit_factor": 1.6439705331760546,
+      "avg_win_pct": 0.8108439192459038,
+      "avg_loss_pct": -0.45328372652233656,
+      "final_equity": 17907.349284624073,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 3.0,
+        "MAX_HOLD_BARS_3M": 40
+      }
+    },
+    {
+      "n_trades": 1101,
+      "total_pnl": 22608.409971786772,
+      "return_pct": 72.32361704654915,
+      "win_rate": 49.137148047229786,
+      "profit_factor": 1.6224869049567636,
+      "avg_win_pct": 0.807922451947811,
+      "avg_loss_pct": -0.45815218176484396,
+      "final_equity": 17232.361704654915,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 2.5,
+        "MAX_HOLD_BARS_3M": 30
+      }
+    },
+    {
+      "n_trades": 1119,
+      "total_pnl": 22151.08297270041,
+      "return_pct": 67.87126441332242,
+      "win_rate": 49.32975871313673,
+      "profit_factor": 1.6088310102155874,
+      "avg_win_pct": 0.7977367821896241,
+      "avg_loss_pct": -0.4598893683185843,
+      "final_equity": 16787.126441332242,
+      "params": {
+        "TREND_PULLBACK_TO_EMA_ATR": 3.0,
+        "MAX_HOLD_BARS_3M": 30
+      }
+    }
+  ]
+}

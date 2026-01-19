@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-01-17T19:25:19.277726",
+  "overall_status": "PASSED",
+  "total_passed": 14,
+  "total_failed": 0,
+  "sections": [
+    {
+      "name": "HMM State Labeling",
+      "status": "PASSED",
+      "passed": 3,
+      "failed": 0,
+      "errors": []
+    },
+    {
+      "name": "Confirm Layer RANGE Validation",
+      "status": "PASSED",
+      "passed": 4,
+      "failed": 0,
+      "errors": []
+    },
+    {
+      "name": "XGB Feature Extraction",
+      "status": "PASSED",
+      "passed": 5,
+      "failed": 0,
+      "errors": []
+    },
+    {
+      "name": "HMM Fusion",
+      "status": "PASSED",
+      "passed": 2,
+      "failed": 0,
+      "errors": []
+    }
+  ]
+}

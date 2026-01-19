@@ -1,0 +1,66 @@
+{
+  "test_period": "2024-07-01 ~ 2026-01-15",
+  "capital_allocation": {
+    "RANGE": 0.3,
+    "TREND": 0.7
+  },
+  "range_results": {
+    "n_trades": 1169,
+    "total_pnl": -1504.1947399459518,
+    "win_rate": 54.91873396065012,
+    "profit_factor": 0.6746161402931682,
+    "regime_stats": {
+      "RANGE": {
+        "n_trades": 1169,
+        "win_rate": 54.91873396065012,
+        "total_pnl": -1504.1947399459514
+      }
+    }
+  },
+  "trend_results": {
+    "n_trades": 1154,
+    "total_pnl": 7292.148076699302,
+    "win_rate": 49.653379549393414,
+    "profit_factor": 1.1649698608911905,
+    "regime_stats": {
+      "TREND_DOWN": {
+        "n_trades": 411,
+        "win_rate": 52.06812652068127,
+        "total_pnl": 2354.944299992544
+      },
+      "TREND_UP": {
+        "n_trades": 743,
+        "win_rate": 48.31763122476447,
+        "total_pnl": 4937.203776706767
+      }
+    }
+  },
+  "combined_results": {
+    "n_trades": 2323,
+    "total_pnl": 5787.953336753353,
+    "win_rate": 52.30305639259578,
+    "profit_factor": 1.1185430686301787,
+    "regime_stats": {
+      "RANGE": {
+        "n_trades": 1169,
+        "win_rate": 54.91873396065012,
+        "total_pnl": -1504.1947399459514
+      },
+      "TREND_DOWN": {
+        "n_trades": 411,
+        "win_rate": 52.06812652068127,
+        "total_pnl": 2354.944299992544
+      },
+      "TREND_UP": {
+        "n_trades": 743,
+        "win_rate": 48.31763122476447,
+        "total_pnl": 4937.203776706767
+      }
+    }
+  },
+  "final_equity": {
+    "range": 296.84168106658035,
+    "trend": 5627.26157639369,
+    "total": 5924.1032574602705
+  }
+}

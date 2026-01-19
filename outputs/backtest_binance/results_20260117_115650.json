@@ -1,0 +1,49 @@
+{
+  "baseline": {
+    "use_tick_features": false,
+    "leverage": 5.0,
+    "initial_capital": 10000.0,
+    "final_equity": 10000.0,
+    "return_pct": 0.0,
+    "total_trades": 0,
+    "winning_trades": 0,
+    "win_rate": 0,
+    "total_pnl": 0,
+    "profit_factor": Infinity,
+    "max_drawdown_pct": 0,
+    "tick_stats": {
+      "sudden_moves_detected": 0,
+      "emergency_exits": 0,
+      "optimized_entries": 0,
+      "total_improvement": 0.0
+    },
+    "avg_entry_improvement_pct": 0,
+    "regime_stats": {}
+  },
+  "with_tick_features": {
+    "use_tick_features": true,
+    "leverage": 5.0,
+    "initial_capital": 10000.0,
+    "final_equity": 10000.0,
+    "return_pct": 0.0,
+    "total_trades": 0,
+    "winning_trades": 0,
+    "win_rate": 0,
+    "total_pnl": 0,
+    "profit_factor": Infinity,
+    "max_drawdown_pct": 0,
+    "tick_stats": {
+      "sudden_moves_detected": 176,
+      "emergency_exits": 0,
+      "optimized_entries": 0,
+      "total_improvement": 0.0
+    },
+    "avg_entry_improvement_pct": 0,
+    "regime_stats": {}
+  },
+  "improvement": {
+    "return_pct": 0.0,
+    "profit_factor": NaN,
+    "win_rate": 0
+  }
+}

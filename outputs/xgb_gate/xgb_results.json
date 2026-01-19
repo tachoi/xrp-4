@@ -1,0 +1,26 @@
+{
+  "train_samples": 308,
+  "test_samples": 78,
+  "baseline": {
+    "n_trades": 78,
+    "win_rate": 76.92307692307693,
+    "total_pnl": 23.43067187862548
+  },
+  "best_threshold": 0.5,
+  "feature_cols": [
+    "ret",
+    "ret_2",
+    "ret_5",
+    "ema_diff",
+    "price_to_ema20",
+    "price_to_ema50",
+    "volatility",
+    "range_pct",
+    "volume_ratio",
+    "rsi",
+    "ema_slope",
+    "side_num",
+    "regime_trend_up",
+    "regime_trend_down"
+  ]
+}

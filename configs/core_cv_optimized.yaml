@@ -1,0 +1,75 @@
+# XRP Core Trading System - Cross-Validated Optimized Configuration
+# Optimized with cross-validation to reduce overfitting
+# Training (1 year):   PnL +5.03%, 73 trades, 42.5% WR, PF 1.49
+# Validation (6 month): PnL +0.83%, 26 trades, 57.7% WR, PF 1.55
+# Combined Score: 0.41
+
+zone:
+  atr_period: 14
+  radius_multiplier: 0.6
+  pad_multiplier: 0.4
+  pivot_lookback: 2
+  reaction_lookahead: 12
+  reaction_k_atr: 0.8
+  max_per_side: 3                # Reduced from 6 to be more selective
+  decay_halflife_hours: 12.0
+  # Zone expiration settings
+  min_strength_threshold: 0.1   # Remove zone if strength < threshold
+  max_age_hours: 48.0           # Remove zone if older than 48 hours
+  price_distance_atr: 8.0       # Remove zone if price > 8*ATR away
+  break_removal_enabled: true   # Remove zone on decisive break
+  single_zone_mode: true        # Only use nearest zone (key improvement)
+
+fsm:
+  ema_period: 20
+  rsi_period: 14
+  atr_period: 14
+  anchor_vol_mult: 1.5           # Volume spike threshold
+  anchor_vol_sma_n: 50
+  anchor_body_atr_mult: 1.0      # Lower = more anchors detected
+  chase_dist_max_atr: 1.5        # Chase filter distance
+  anchor_expire_candles: 4
+  hold_max_candles: 12           # Max hold = 36 minutes
+  cooldown_candles: 3
+  pullback_tolerance_atr: 0.9    # Wider pullback tolerance
+  # Pullback entry (avoid chasing)
+  entry_pullback_enabled: true   # Wait for pullback before entry
+  entry_pullback_atr: 0.3        # Pullback depth in ATR units
+  entry_pullback_max_candles: 3  # Max candles to wait for pullback
+  # Exit improvements
+  min_candles_for_exit: 5        # Min candles before tech exits
+  min_mfe_for_tech_exit: 0.15    # Min MFE % before tech exits allowed
+  take_profit_r: 2.0             # Take profit at 2R (2x risk)
+  trailing_start_r: 1.0          # Start trailing after 1R profit
+  trailing_step_r: 0.5           # Trail by 0.5R increments
+  time_stop_ignore_if_profit: true  # Don't time stop if in profit
+  # SHORT early exit (SHORT loses profits if not taken early)
+  short_early_exit_enabled: true # Enable early TP for SHORT
+  short_take_profit_pct: 0.15    # Take profit at 0.15% for SHORT (optimized)
+  short_min_candles: 2           # Min candles before SHORT exit
+  short_disable_ema_exit: true   # Disable EMA exit for SHORT (0% WR)
+  # LONG entry filter (avoid counter-trend)
+  long_trend_filter_enabled: true   # Block LONG in strong downtrend
+  long_ema_slope_threshold: -0.3    # Block LONG if EMA slope < threshold (strong downtrend)
+  # SHORT entry filter (avoid counter-trend)
+  short_trend_filter_enabled: false  # Disabled - removes good trades too
+  short_ema_slope_threshold: 0.3    # Block SHORT if EMA slope > threshold (strong uptrend)
+  # Breakeven trailing stop
+  breakeven_trail_enabled: false    # Disabled - conflicts with SHORT early TP
+  breakeven_trigger_pct: 0.15       # Trigger breakeven at 0.15% profit
+  breakeven_offset_pct: 0.02        # Offset from entry (small buffer)
+
+phenomena:
+  lookback_k: 8
+  low_fail_mode: "2of4"
+  lower_wick_ratio_min: 0.4
+  body_shrink_factor: 0.5
+  range_shrink_factor: 0.7
+  requirements_min_count: 2      # Need 2 of 4 conditions (stricter filter)
+
+risk:
+  risk_per_trade_pct: 0.3
+  daily_max_loss_pct: 2.0
+  drawdown_size_reduce_steps:
+    - 0.5
+    - 0.3

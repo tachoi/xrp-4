@@ -1,0 +1,38 @@
+{
+  "trading_params": {
+    "min_confidence": 0.6,
+    "sl_mult_trend": 2.5,
+    "tp_mult_trend": 5.0,
+    "sl_mult_range": 1.5,
+    "tp_mult_range": 2.0
+  },
+  "confirm_params": {
+    "trend_confirm_b_atr": 0.5,
+    "high_vol_lambda_on": 2.0,
+    "high_vol_cooldown_bars": 6
+  },
+  "validation_results": {
+    "final_equity": 8950.529493736396,
+    "total_return_pct": -10.49470506263604,
+    "n_trades": 157,
+    "win_rate": 40.76433121019109,
+    "profit_factor": 0.9219966033254731,
+    "max_drawdown_pct": -17.94485285186586
+  },
+  "test_results": {
+    "final_equity": 8510.110217749963,
+    "total_return_pct": -14.898897822500368,
+    "n_trades": 122,
+    "win_rate": 32.78688524590164,
+    "profit_factor": 0.7821241964447797,
+    "max_drawdown_pct": -24.860682611140763
+  },
+  "default_test_results": {
+    "final_equity": 8222.73779313508,
+    "total_return_pct": -17.7726220686492,
+    "n_trades": 169,
+    "win_rate": 35.50295857988166,
+    "profit_factor": 0.8159539248757481,
+    "max_drawdown_pct": -23.918862089922605
+  }
+}

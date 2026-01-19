@@ -1,0 +1,30 @@
+{
+  "best_params": {
+    "min_confidence": 0.7,
+    "require_1h_alignment": true,
+    "min_ewm_ret_15m": 0.0008,
+    "sl_atr_mult": 1.5,
+    "tp_atr_mult": 4.0,
+    "use_trailing_stop": false
+  },
+  "validation_results": {
+    "return_pct": -2.3315525771911783,
+    "win_rate": 23.809523809523807,
+    "profit_factor": 0.8698717711558036,
+    "max_drawdown_pct": -4.43080867510824,
+    "n_trades": 42,
+    "expectancy": -0.02521068224227794,
+    "avg_win_pct": 0.72094323070767,
+    "avg_loss_pct": 0.25838378003913665
+  },
+  "test_results": {
+    "return_pct": -2.299659651785969,
+    "win_rate": 26.0,
+    "profit_factor": 0.9372872715335592,
+    "max_drawdown_pct": -6.064662235878934,
+    "n_trades": 50,
+    "expectancy": -0.014611263230169948,
+    "avg_win_pct": 0.972820014407122,
+    "avg_loss_pct": 0.3615465769946239
+  }
+}

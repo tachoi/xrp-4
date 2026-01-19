@@ -1,0 +1,88 @@
+{
+  "test_period": "2024-07-01 ~ 2026-01-15",
+  "single_position": {
+    "n_trades": 1490,
+    "total_pnl": 33239.632630445165,
+    "return_pct": 82.15778526031765,
+    "win_rate": 49.261744966442954,
+    "profit_factor": 1.6418920252590619,
+    "avg_win": 0.7227228438294755,
+    "avg_loss": -0.40271169209736424,
+    "final_equity": 18215.778526031765,
+    "regime_stats": {
+      "TREND_DOWN": {
+        "n_trades": 428,
+        "win_rate": 54.4392523364486,
+        "total_pnl": 7639.103575802645
+      },
+      "TREND_UP": {
+        "n_trades": 1062,
+        "win_rate": 47.175141242937855,
+        "total_pnl": 25600.529054642517
+      }
+    }
+  },
+  "independent_positions": {
+    "trend_up": {
+      "n_trades": 744,
+      "total_pnl": 3154.2635944845892,
+      "return_pct": -22.462582049584935,
+      "win_rate": 50.0,
+      "profit_factor": 1.1124298463831186,
+      "avg_win": 1.4182319391634672,
+      "avg_loss": -1.2057502119600787,
+      "final_equity": 3876.8708975207533,
+      "regime_stats": {
+        "TREND_UP": {
+          "n_trades": 744,
+          "win_rate": 50.0,
+          "total_pnl": 3154.2635944845892
+        }
+      }
+    },
+    "trend_down": {
+      "n_trades": 403,
+      "total_pnl": 510.4598844772818,
+      "return_pct": -26.761022779211217,
+      "win_rate": 58.80893300248139,
+      "profit_factor": 1.0471910187434084,
+      "avg_win": 1.0255027877156222,
+      "avg_loss": -1.3705494787089323,
+      "final_equity": 3661.948861039439,
+      "regime_stats": {
+        "TREND_DOWN": {
+          "n_trades": 403,
+          "win_rate": 58.80893300248139,
+          "total_pnl": 510.4598844772818
+        }
+      }
+    },
+    "combined": {
+      "n_trades": 1147,
+      "total_pnl": 3664.72347896187,
+      "return_pct": -24.611802414398078,
+      "win_rate": 53.09503051438536,
+      "profit_factor": 1.0942760107245555,
+      "avg_win": 1.2653964565803157,
+      "avg_loss": -1.2565990563472713,
+      "final_equity": 7538.819758560192,
+      "regime_stats": {
+        "TREND_UP": {
+          "n_trades": 744,
+          "win_rate": 50.0,
+          "total_pnl": 3154.2635944845892
+        },
+        "TREND_DOWN": {
+          "n_trades": 403,
+          "win_rate": 58.80893300248139,
+          "total_pnl": 510.4598844772818
+        }
+      }
+    },
+    "equity": {
+      "trend_up": 3876.8708975207533,
+      "trend_down": 3661.948861039439,
+      "total": 7538.819758560192
+    }
+  }
+}

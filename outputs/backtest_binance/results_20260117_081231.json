@@ -1,0 +1,45 @@
+{
+  "baseline": {
+    "use_tick_features": false,
+    "initial_capital": 10000.0,
+    "final_equity": 10001.559121594399,
+    "return_pct": 0.015591215943988601,
+    "total_trades": 73,
+    "winning_trades": 34,
+    "win_rate": 46.57534246575342,
+    "total_pnl": 4.056094244944598,
+    "profit_factor": 1.109751724507506,
+    "max_drawdown_pct": 0.12805720584812857,
+    "tick_stats": {
+      "sudden_moves_detected": 0,
+      "emergency_exits": 0,
+      "optimized_entries": 0,
+      "total_improvement": 0.0
+    },
+    "avg_entry_improvement_pct": 0
+  },
+  "with_tick_features": {
+    "use_tick_features": true,
+    "initial_capital": 10000.0,
+    "final_equity": 10006.616412435436,
+    "return_pct": 0.06616412435436203,
+    "total_trades": 80,
+    "winning_trades": 34,
+    "win_rate": 42.5,
+    "total_pnl": 9.35904497532549,
+    "profit_factor": 1.434315651529718,
+    "max_drawdown_pct": 0.04338192944924133,
+    "tick_stats": {
+      "sudden_moves_detected": 1090,
+      "emergency_exits": 40,
+      "optimized_entries": 80,
+      "total_improvement": 0.1417578494949239
+    },
+    "avg_entry_improvement_pct": 0.17719731186865487
+  },
+  "improvement": {
+    "return_pct": 0.05057290841037343,
+    "profit_factor": 0.32456392702221204,
+    "win_rate": -4.0753424657534225
+  }
+}

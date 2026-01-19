@@ -1,0 +1,17 @@
+{
+  "train_results": {
+    "return_pct": -0.14592572941488471,
+    "n_trades": 332,
+    "win_rate": 50.0,
+    "profit_factor": 1.152938042143526,
+    "max_drawdown_pct": -0.2761599780887472
+  },
+  "test_results": {
+    "return_pct": -0.024311760182918078,
+    "n_trades": 120,
+    "win_rate": 47.5,
+    "profit_factor": 1.2203740042635753,
+    "max_drawdown_pct": -0.1248951769077221,
+    "expectancy": 0.07508879641281654
+  }
+}

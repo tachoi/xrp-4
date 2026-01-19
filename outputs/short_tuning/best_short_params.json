@@ -1,0 +1,20 @@
+{
+  "params": {
+    "SHORT_PULLBACK_TO_EMA_ATR": 1.5,
+    "SHORT_MIN_EMA_SLOPE_15M": 0.002,
+    "SHORT_MIN_REJECTION_RET": 0.0005,
+    "SHORT_CONSEC_NEG_BARS": 1,
+    "SHORT_PEAK_CONFIRM_BARS": 2,
+    "SHORT_MAX_HOLD_BARS_3M": 30,
+    "STOP_ATR_MULT": 1.5
+  },
+  "metrics": {
+    "n_trades": 144,
+    "win_rate": 51.388888888888886,
+    "return_pct": 26.07788167121514,
+    "profit_factor": 1.5255870628328516,
+    "expectancy": 0.18109640049454956,
+    "avg_bars_held": 14.159722222222221,
+    "max_consecutive_loss": 7
+  }
+}

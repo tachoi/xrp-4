@@ -1,0 +1,68 @@
+# XRP-4 Step0 Baseline Configuration
+# Zone-based Bounce/Breakout strategy with fixed risk (NO-ML)
+
+# Data parameters
+symbol: "XRPUSDT"
+timeframe: "3m"
+start: "2023-01-01"
+end: "2024-12-31"
+
+# Capital & Risk
+initial_capital: 10000.0
+risk_per_trade: 0.0025  # 0.25% of equity per trade
+max_position: 1
+cooldown_bars: 3
+
+# Costs
+fee_bps: 4.0       # 0.04% per side (Binance maker/taker avg)
+slippage_bps: 2.0  # 0.02% slippage
+
+# Zone building parameters
+zone_method: "pivot_cluster"
+pivot_left: 3
+pivot_right: 3
+zone_lookback_bars: 500
+zone_rebuild_freq: 30  # Rebuild zones every N bars
+max_zones: 12
+atr_tf: "15m"          # ATR timeframe (fallback to "3m" if not available)
+zone_width_atr_k: 1.0  # Zone width as multiple of ATR
+
+# Signal band parameters (ATR multiples)
+touch_band_atr_k: 0.2   # Touch band around zone edges
+break_band_atr_k: 0.2   # Breakout band above/below zone
+confirm_mode: "next_close"  # Confirmation mode for Step0
+signal_mode: "breakout_only"  # "all", "bounce_only", "breakout_only"
+
+# Exit parameters
+sl_band_atr_k: 0.2   # Stop loss band (ATR multiple)
+rr_bounce: 1.2       # Risk:Reward ratio for bounce trades
+rr_breakout: 1.5     # Risk:Reward ratio for breakout trades
+
+# Output
+output_dir: "outputs/step0"
+run_id: "run_001"  # Will be auto-generated if not provided
+
+# Box Strength Filter (Step 0.1)
+box_filter:
+  enabled: true
+  lookback_bars: 64                 # ~3h on 3m
+  atr_period: 14
+  atr_tf: "15m"                     # fallback to 3m if not available
+  min_height_atr: 3.0               # Key threshold
+  update_every_bars: 10             # recompute box/strength periodically
+
+  # Reaction filter (optional)
+  use_reaction_filter: false
+  edge_band_atr_k: 0.3
+  reaction_lookback_touches: 20
+  reaction_horizon_bars: 6
+  move_target_atr_k: 1.0
+  reaction_min_rate: 0.48
+
+  # Cost filter (optional)
+  use_cost_filter: false
+  cost_safety_mult: 2.0
+
+# Report options
+report:
+  dump_box_filter_diagnostics: true
