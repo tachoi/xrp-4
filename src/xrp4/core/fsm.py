@@ -104,8 +104,10 @@ class FSMConfig:
     BREAKEVEN_BUFFER_ATR: float = 0.2           # Buffer above/below entry
 
     # 2. ATR-based Take Profit: Exit when price moves favorably by X ATR
-    TP_ATR_EXIT: bool = True                    # Enable ATR-based take profit
-    TP_ATR_THRESHOLD: float = 2.0               # Take profit at 2.0 ATR move (1:1 with stop)
+    # DISABLED: Fixed TP cuts winners short in strong trends
+    # Use trailing stop instead to let profits run
+    TP_ATR_EXIT: bool = False                   # Disabled: let trailing stop manage exits
+    TP_ATR_THRESHOLD: float = 2.0               # (unused when TP_ATR_EXIT=False)
 
     # Volatility filter - losers had 12% higher volatility
     MAX_VOLATILITY_FOR_ENTRY: float = 0.012     # Skip entry if volatility > 1.2%

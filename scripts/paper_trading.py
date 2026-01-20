@@ -628,8 +628,8 @@ class PaperTradingEngine:
 
         # === Break-even Stop (손실 방지) ===
         # 작은 수익 도달 시 손익분기점으로 스탑 이동
-        self.BREAKEVEN_ACTIVATION_PCT = 0.08   # 0.08% 수익 도달 시 활성화 (synced with backtest)
-        self.BREAKEVEN_BUFFER_PCT = 0.02       # 손익분기 + 0.02% (수수료 커버)
+        self.BREAKEVEN_ACTIVATION_PCT = 0.10   # 0.10% = TRAILING과 동일 (BREAKEVEN 구간 제거)
+        self.BREAKEVEN_BUFFER_PCT = 0.05       # 손익분기 + 0.05% (수수료 0.04% 커버 + 여유)
         self.breakeven_activated = False        # Break-even 활성화 상태
 
         # Tracking variables
@@ -2123,7 +2123,12 @@ class PaperTradingEngine:
                         if self.pending_signal:
                             pending_info = f" | PENDING: {self.pending_signal['decision'].action}"
 
-                        logger.info(f"[HEARTBEAT] Price: ${current_price:.4f}{pos_info}{pending_info}")
+                        # Total PnL info
+                        if self.total_pnl >= 0:
+                            pnl_info = f" | PnL: +${self.total_pnl:.2f} ({self.total_trades}T)"
+                        else:
+                            pnl_info = f" | PnL: -${abs(self.total_pnl):.2f} ({self.total_trades}T)"
+                        logger.info(f"[HEARTBEAT] Price: ${current_price:.4f}{pos_info}{pending_info}{pnl_info}")
                         sys.stdout.flush()
 
                 time.sleep(self.poll_interval)

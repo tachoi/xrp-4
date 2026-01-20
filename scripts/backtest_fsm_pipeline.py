@@ -896,7 +896,7 @@ def run_fsm_backtest(
     hmm_model,  # SingleHMM or MultiHMM
     features: np.ndarray,
     initial_capital: float = 10000.0,
-    fee_rate: float = 0.001,
+    fee_rate: float = 0.0004,  # 0.04% Binance Futures taker fee
     # Additional params for MultiHMM
     features_3m: np.ndarray = None,
     df_3m_hmm: pd.DataFrame = None,
@@ -1143,11 +1143,12 @@ def run_fsm_backtest(
                 max_unrealized_pnl_pct = current_pnl_pct
 
         # === Break-even Stop (손실 방지) ===
-        # 0.08% 수익 도달 시 활성화, 손익분기+0.02%에서 청산
+        # BREAKEVEN_ACTIVATION = TRAILING_STOP_ACTIVATION (0.10%)으로 설정하여 BREAKEVEN 구간 제거
+        # 0.10% 미만에서는 스탑 없음, 0.10% 이상에서는 TRAILING_STOP만 사용
         breakeven_stop_triggered = False
         breakeven_stop_exit_price = None
-        BREAKEVEN_ACTIVATION_PCT = 0.08   # Activate when profit reaches 0.08% (raised from 0.05%)
-        BREAKEVEN_BUFFER_PCT = 0.02       # Exit at break-even + 0.02% (covers fees)
+        BREAKEVEN_ACTIVATION_PCT = 0.10   # = TRAILING_STOP_ACTIVATION (BREAKEVEN 구간 제거)
+        BREAKEVEN_BUFFER_PCT = 0.05       # Exit at break-even + 0.05% (covers 0.04% exit fee + margin)
 
         if position.side != "FLAT" and df_1m is not None and len(df_1m) > 0:
             # Check if break-even should be activated (profit reached 0.05%)
@@ -1177,7 +1178,7 @@ def run_fsm_backtest(
                     pass
 
         # === 1m-level Trailing Stop Check (higher precision than 3m FSM) ===
-        # Fee consideration: ~0.2% round-trip fees, need profit > 0.2% to be worthwhile
+        # Fee consideration: ~0.08% round-trip fees (0.04% × 2), need profit > 0.08% to be worthwhile
         # Activation: 0.10% profit (ensures meaningful profit to protect)
         # Preserve: 80% in low volatility, 60% otherwise (dynamic based on market conditions)
         trailing_stop_triggered = False
