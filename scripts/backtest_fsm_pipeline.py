@@ -902,6 +902,12 @@ def run_fsm_backtest(
     df_3m_hmm: pd.DataFrame = None,
     # 1m data for precise execution
     df_1m: pd.DataFrame = None,
+    # Regime change entry mode
+    regime_change_entry: bool = False,
+    # Hybrid entry mode (regime change + FSM pullback)
+    hybrid_entry: bool = False,
+    # Wide trailing stop mode
+    wide_trailing_stop: bool = False,
 ) -> Dict:
     """Run backtest with full FSM + DecisionEngine pipeline at 3m resolution.
 
@@ -977,6 +983,7 @@ def run_fsm_backtest(
 
     # Backtest state
     equity = initial_capital
+    leverage = 5.0  # 5x leverage for regime change entry mode
     position = PositionState(side="FLAT")
     trades = []
     equity_curve = [equity]
@@ -991,6 +998,10 @@ def run_fsm_backtest(
 
     # Track last 15m bar index for confirm layer
     last_15m_idx = 0
+
+    # Regime change tracking
+    prev_regime_confirmed = None
+    regime_change_entries = []  # Track regime change entry signals
 
     for idx in range(250, len(df_3m_bt)):  # 250 bars warmup for 3m
         bar = df_3m_bt.iloc[idx]
@@ -1026,6 +1037,34 @@ def run_fsm_backtest(
             confirm_reason=confirm_result.reason,
             confirm_metrics=confirm_result.metrics,
         )
+
+        # Detect regime change
+        current_regime = confirm_result.confirmed_regime
+        regime_changed = prev_regime_confirmed is not None and current_regime != prev_regime_confirmed
+        regime_change_signal = None
+
+        if regime_changed:
+            # Determine entry signal based on regime transition
+            if prev_regime_confirmed == "RANGE" and current_regime == "TREND_UP":
+                regime_change_signal = "REGIME_LONG_RANGE_TO_UP"
+            elif prev_regime_confirmed == "RANGE" and current_regime == "TREND_DOWN":
+                regime_change_signal = "REGIME_SHORT_RANGE_TO_DOWN"
+            elif prev_regime_confirmed == "TREND_DOWN" and current_regime == "TREND_UP":
+                regime_change_signal = "REGIME_LONG_REVERSAL"
+            elif prev_regime_confirmed == "TREND_UP" and current_regime == "TREND_DOWN":
+                regime_change_signal = "REGIME_SHORT_REVERSAL"
+
+            if regime_change_signal:
+                regime_change_entries.append({
+                    "idx": idx,
+                    "ts": ts,
+                    "price": float(bar["close"]),
+                    "prev_regime": prev_regime_confirmed,
+                    "new_regime": current_regime,
+                    "signal": regime_change_signal,
+                })
+
+        prev_regime_confirmed = current_regime
 
         # Build market context using actual 3m data
         price = float(bar["close"])
@@ -1179,20 +1218,24 @@ def run_fsm_backtest(
 
         # === 1m-level Trailing Stop Check (higher precision than 3m FSM) ===
         # Fee consideration: ~0.08% round-trip fees (0.04% × 2), need profit > 0.08% to be worthwhile
-        # Activation: 0.10% profit (ensures meaningful profit to protect)
-        # Preserve: 80% in low volatility, 60% otherwise (dynamic based on market conditions)
         trailing_stop_triggered = False
         trailing_stop_exit_price = None
-        TRAILING_STOP_ACTIVATION_PCT = 0.10   # Activate when profit reaches 0.10%
-        TRAILING_STOP_MIN_PRESERVE_PCT = 0.05 # Minimum 0.05% profit to preserve (must be < activation)
 
-        # Dynamic preserve percentage based on volatility
-        LOW_VOLATILITY_THRESHOLD = 0.30  # 0.30% volatility threshold
-        current_volatility = bar.get("volatility_3m", bar.get("ret_std_3m", 0.005)) * 100  # Convert to %
-        if current_volatility < LOW_VOLATILITY_THRESHOLD:
-            TRAILING_STOP_PRESERVE_PCT = 0.80     # Low volatility: preserve 80% of max profit
+        # Wide trailing stop mode: let profits run longer
+        if wide_trailing_stop:
+            TRAILING_STOP_ACTIVATION_PCT = 0.30   # Activate when profit reaches 0.30%
+            TRAILING_STOP_MIN_PRESERVE_PCT = 0.15 # Minimum 0.15% profit to preserve
+            TRAILING_STOP_PRESERVE_PCT = 0.50     # Preserve only 50% of max profit (let it run)
         else:
-            TRAILING_STOP_PRESERVE_PCT = 0.60     # Normal: preserve 60% of max profit
+            TRAILING_STOP_ACTIVATION_PCT = 0.10   # Activate when profit reaches 0.10%
+            TRAILING_STOP_MIN_PRESERVE_PCT = 0.05 # Minimum 0.05% profit to preserve
+            # Dynamic preserve percentage based on volatility
+            LOW_VOLATILITY_THRESHOLD = 0.30  # 0.30% volatility threshold
+            current_volatility = bar.get("volatility_3m", bar.get("ret_std_3m", 0.005)) * 100
+            if current_volatility < LOW_VOLATILITY_THRESHOLD:
+                TRAILING_STOP_PRESERVE_PCT = 0.80     # Low volatility: preserve 80% of max profit
+            else:
+                TRAILING_STOP_PRESERVE_PCT = 0.60     # Normal: preserve 60% of max profit
 
         if position.side != "FLAT" and df_1m is not None and len(df_1m) > 0 and not breakeven_stop_triggered:
             if max_unrealized_pnl_pct >= TRAILING_STOP_ACTIVATION_PCT:
@@ -1345,7 +1388,42 @@ def run_fsm_backtest(
             entry_signal = None
             entry_idx = None
 
-        elif decision.action == "OPEN_LONG" and position.side == "FLAT":
+        # === Regime Change Entry Mode (or Hybrid Mode) ===
+        elif (regime_change_entry or hybrid_entry) and regime_change_signal and position.side == "FLAT":
+            # Enter based on regime change signal
+            entry_price = price
+            skip_entry = False
+
+            # Determine side from signal
+            if "LONG" in regime_change_signal:
+                side = "LONG"
+            elif "SHORT" in regime_change_signal:
+                side = "SHORT"
+            else:
+                skip_entry = True
+                side = None
+
+            if not skip_entry:
+                position_value = equity * leverage
+                size = position_value / entry_price
+                fee = entry_price * size * fee_rate
+                equity -= fee
+
+                position = PositionState(
+                    side=side,
+                    entry_price=entry_price,
+                    size=size,
+                    entry_ts=market_ctx.ts,
+                    bars_held_3m=0,
+                    unrealized_pnl=0,
+                )
+                entry_regime = confirm_result.confirmed_regime
+                entry_signal = regime_change_signal
+                entry_idx = idx
+                max_unrealized_pnl = 0.0
+                max_unrealized_pnl_pct = 0.0
+
+        elif decision.action == "OPEN_LONG" and position.side == "FLAT" and (not regime_change_entry or hybrid_entry):
             # 1m Entry Analysis: Spike detection + optimal entry
             entry_price = price
             skip_entry = False
@@ -1398,7 +1476,7 @@ def run_fsm_backtest(
                 max_unrealized_pnl = 0.0
                 max_unrealized_pnl_pct = 0.0
 
-        elif decision.action == "OPEN_SHORT" and position.side == "FLAT":
+        elif decision.action == "OPEN_SHORT" and position.side == "FLAT" and (not regime_change_entry or hybrid_entry):
             # 1m Entry Analysis: Spike detection + optimal entry
             entry_price = price
             skip_entry = False
@@ -1530,6 +1608,7 @@ def run_fsm_backtest(
         "trades_df": trades_df,
         "signals_df": signals_df,
         "equity_curve": equity_curve,
+        "regime_change_entries": regime_change_entries,  # Track regime change signals
     }
 
     if len(trades) > 0:
@@ -1641,6 +1720,12 @@ def main():
                        help="HMM type: 'single' (5-state 15m only) or 'multi' (3m+15m fusion)")
     parser.add_argument("--use-checkpoint", type=str, default=None,
                        help="Use pre-trained HMM checkpoint (run_id). Skips training and uses all data as test.")
+    parser.add_argument("--regime-change-entry", action="store_true",
+                       help="Test regime change entry signals instead of FSM pullback signals")
+    parser.add_argument("--hybrid-entry", action="store_true",
+                       help="Use both regime change AND FSM pullback entry signals")
+    parser.add_argument("--wide-trailing-stop", action="store_true",
+                       help="Use wider trailing stop (0.30% activation, 50% preserve) for bigger moves")
 
     args = parser.parse_args()
 
@@ -1901,10 +1986,16 @@ def main():
         if args.hmm_type == "multi":
             train_results = run_fsm_backtest(
                 train_df_3m, train_df_15m, hmm_model, train_features,
-                features_3m=train_features_3m, df_3m_hmm=train_df_3m_hmm, df_1m=df_1m
+                features_3m=train_features_3m, df_3m_hmm=train_df_3m_hmm, df_1m=df_1m,
+                regime_change_entry=args.regime_change_entry,
+                hybrid_entry=args.hybrid_entry,
+                wide_trailing_stop=args.wide_trailing_stop
             )
         else:
-            train_results = run_fsm_backtest(train_df_3m, train_df_15m, hmm_model, train_features, df_1m=df_1m)
+            train_results = run_fsm_backtest(train_df_3m, train_df_15m, hmm_model, train_features, df_1m=df_1m,
+                                            regime_change_entry=args.regime_change_entry,
+                                            hybrid_entry=args.hybrid_entry,
+                                            wide_trailing_stop=args.wide_trailing_stop)
 
         logger.info(f"\nTrain Results:")
         logger.info(f"  Return: {train_results['total_return_pct']:.2f}%")
@@ -1926,10 +2017,16 @@ def main():
     if args.hmm_type == "multi":
         test_results = run_fsm_backtest(
             test_df_3m, test_df_15m, hmm_model, test_features,
-            features_3m=test_features_3m, df_3m_hmm=test_df_3m_hmm, df_1m=df_1m
+            features_3m=test_features_3m, df_3m_hmm=test_df_3m_hmm, df_1m=df_1m,
+            regime_change_entry=args.regime_change_entry,
+            hybrid_entry=args.hybrid_entry,
+            wide_trailing_stop=args.wide_trailing_stop
         )
     else:
-        test_results = run_fsm_backtest(test_df_3m, test_df_15m, hmm_model, test_features, df_1m=df_1m)
+        test_results = run_fsm_backtest(test_df_3m, test_df_15m, hmm_model, test_features, df_1m=df_1m,
+                                        regime_change_entry=args.regime_change_entry,
+                                        hybrid_entry=args.hybrid_entry,
+                                        wide_trailing_stop=args.wide_trailing_stop)
 
     logger.info(f"\nTest Results:")
     logger.info(f"  Return: {test_results['total_return_pct']:.2f}%")
@@ -2006,6 +2103,32 @@ def main():
             logger.info(f"{'Win Rate %':<20} {test_results['win_rate']:>12.1f}")
             logger.info(f"{'Profit Factor':<20} {test_results['profit_factor']:>12.2f}")
             logger.info(f"{'Max DD %':<20} {test_results['max_drawdown_pct']:>12.2f}")
+
+    # Regime Change Entry Mode Info
+    if args.regime_change_entry:
+        logger.info("\n" + "=" * 70)
+        logger.info("REGIME CHANGE ENTRY MODE")
+        logger.info("=" * 70)
+        regime_entries = test_results.get("regime_change_entries", [])
+        logger.info(f"Total regime change signals: {len(regime_entries)}")
+
+        if regime_entries:
+            entry_df = pd.DataFrame(regime_entries)
+            for signal_type in entry_df["signal"].unique():
+                count = len(entry_df[entry_df["signal"] == signal_type])
+                logger.info(f"  {signal_type}: {count}")
+
+        # Breakdown by entry signal
+        if test_results["n_trades"] > 0:
+            trades_df = test_results["trades_df"]
+            logger.info("\nTrade Breakdown by Entry Signal:")
+            for signal in trades_df["signal"].unique():
+                signal_trades = trades_df[trades_df["signal"] == signal]
+                if len(signal_trades) > 0:
+                    wins = signal_trades[signal_trades["pnl"] > 0]
+                    wr = len(wins) / len(signal_trades) * 100
+                    pnl = signal_trades["pnl"].sum()
+                    logger.info(f"  {signal}: {len(signal_trades)} trades, WR={wr:.1f}%, PnL=${pnl:.2f}")
             logger.info(f"{'Expectancy %':<20} {test_results.get('expectancy', 0):>12.4f}")
 
     # Save results

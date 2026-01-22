@@ -1,0 +1,405 @@
+/* XRP Trading Dashboard - Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background-color: #131722;
+    color: #d1d4dc;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* Left Panel - 80% */
+.left-panel {
+    flex: 8;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Right Panel - 20% */
+.right-panel {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 250px;
+}
+
+/* Common Panel Styles */
+.chart-container,
+.trade-history,
+.settings-panel,
+.stats-panel,
+.regimes-panel {
+    background-color: #1e222d;
+    border-radius: 8px;
+    border: 1px solid #2a2e39;
+    overflow: hidden;
+}
+
+.panel-header {
+    background-color: #2a2e39;
+    padding: 8px 12px;
+    border-bottom: 1px solid #363a45;
+}
+
+.panel-header h3 {
+    font-size: 13px;
+    margin: 0;
+}
+
+.panel-header h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #d1d4dc;
+}
+
+/* Chart Container */
+.chart-container {
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 15px;
+    background-color: #2a2e39;
+    border-bottom: 1px solid #363a45;
+}
+
+.symbol {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.timeframe {
+    font-size: 12px;
+    color: #787b86;
+    background-color: #363a45;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #26a69a;
+}
+
+.regime-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    background-color: #363a45;
+    color: #d1d4dc;
+}
+
+.regime-badge.trend-up { background-color: #26a69a; color: #fff; }
+.regime-badge.trend-down { background-color: #ef5350; color: #fff; }
+.regime-badge.range { background-color: #42a5f5; color: #fff; }
+.regime-badge.transition { background-color: #ffca28; color: #131722; }
+.regime-badge.high-vol { background-color: #ab47bc; color: #fff; }
+
+#chart {
+    flex: 1;
+    width: 100%;
+}
+
+/* Trade History */
+.trade-history {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.trade-table-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.trade-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.trade-table th,
+.trade-table td {
+    padding: 8px 12px;
+    text-align: right;
+    border-bottom: 1px solid #2a2e39;
+}
+
+.trade-table th {
+    color: #787b86;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    background-color: #1e222d;
+}
+
+.trade-table td:first-child,
+.trade-table th:first-child {
+    text-align: left;
+}
+
+.trade-table .long { color: #26a69a; font-weight: 600; }
+.trade-table .short { color: #ef5350; font-weight: 600; }
+.trade-table .positive { color: #26a69a; }
+.trade-table .negative { color: #ef5350; }
+
+/* Settings Panel */
+.settings-panel {
+    flex: 0 0 auto;
+}
+
+.settings-content {
+    padding: 10px 12px;
+}
+
+.setting-group {
+    margin-bottom: 8px;
+}
+
+.setting-group label {
+    display: block;
+    font-size: 11px;
+    color: #787b86;
+    margin-bottom: 3px;
+}
+
+.setting-group input,
+.setting-group select {
+    width: 100%;
+    padding: 5px 8px;
+    background-color: #2a2e39;
+    border: 1px solid #363a45;
+    border-radius: 4px;
+    color: #d1d4dc;
+    font-size: 13px;
+}
+
+.setting-group input:focus,
+.setting-group select:focus {
+    outline: none;
+    border-color: #2962ff;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn {
+    flex: 1;
+    padding: 6px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-start {
+    background-color: #26a69a;
+    color: #fff;
+}
+
+.btn-start:hover:not(:disabled) {
+    background-color: #2bbd8b;
+}
+
+.btn-stop {
+    background-color: #ef5350;
+    color: #fff;
+}
+
+.btn-stop:hover:not(:disabled) {
+    background-color: #f06562;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #363a45;
+    font-size: 12px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ef5350;
+}
+
+.status-dot.running {
+    background-color: #26a69a;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Stats Panel */
+.stats-panel {
+    flex: 0 0 auto;
+}
+
+.stats-content {
+    padding: 8px 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #2a2e39;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #787b86;
+}
+
+.stat-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: #d1d4dc;
+}
+
+.stat-value.positive { color: #26a69a; }
+.stat-value.negative { color: #ef5350; }
+
+.position-info .stat-value {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.position-info .stat-value.long {
+    background-color: rgba(38, 166, 154, 0.2);
+    color: #26a69a;
+}
+
+.position-info .stat-value.short {
+    background-color: rgba(239, 83, 80, 0.2);
+    color: #ef5350;
+}
+
+/* Regimes Panel */
+.regimes-panel {
+    flex: 1;
+}
+
+.regimes-content {
+    padding: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.regime-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    background-color: #2a2e39;
+    font-size: 12px;
+}
+
+.regime-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.regime-time {
+    color: #787b86;
+    min-width: 60px;
+}
+
+.regime-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e222d;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #363a45;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4a4e59;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-panel,
+    .right-panel {
+        flex: none;
+        width: 100%;
+    }
+
+    .right-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .settings-panel,
+    .stats-panel,
+    .regimes-panel {
+        flex: 1;
+        min-width: 200px;
+    }
+}

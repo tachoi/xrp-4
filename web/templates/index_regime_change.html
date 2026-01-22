@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XRP Regime Change Trading</title>
+    <!-- Lightweight Charts (TradingView) -->
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        /* Additional styles for Regime Change dashboard */
+        .strategy-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pending-signal {
+            background: #ff9800;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+            font-weight: 600;
+            animation: pulse 1.5s infinite;
+        }
+
+        .pending-signal.active {
+            display: block;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .signal-type {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .signal-type.regime-change {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .trade-signal-col {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Regime change specific colors */
+        .regime-badge.REGIME_LONG_RANGE_TO_UP {
+            background: #26a69a;
+        }
+        .regime-badge.REGIME_SHORT_RANGE_TO_DOWN {
+            background: #ef5350;
+        }
+        .regime-badge.REGIME_LONG_REVERSAL {
+            background: #00bcd4;
+        }
+        .regime-badge.REGIME_SHORT_REVERSAL {
+            background: #ff5722;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel (80%) -->
+        <div class="left-panel">
+            <!-- Chart Area (1) -->
+            <div class="chart-container" id="chart-area">
+                <div class="chart-header">
+                    <span class="symbol">XRPUSDT</span>
+                    <span class="timeframe">3m</span>
+                    <span class="strategy-badge">Regime Change Entry</span>
+                    <span class="price" id="current-price">$0.0000</span>
+                    <span class="regime-badge" id="current-regime">--</span>
+                </div>
+                <div id="chart"></div>
+            </div>
+
+            <!-- Trade History (4) -->
+            <div class="trade-history" id="trade-history-area">
+                <div class="panel-header">
+                    <h3>Trade History</h3>
+                </div>
+                <div class="trade-table-container">
+                    <table class="trade-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Side</th>
+                                <th>Entry</th>
+                                <th>Exit</th>
+                                <th>PnL</th>
+                                <th>Signal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trade-table-body">
+                            <!-- Trades will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel (20%) -->
+        <div class="right-panel">
+            <!-- Settings (2) -->
+            <div class="settings-panel" id="settings-area">
+                <div class="panel-header">
+                    <h3>Settings</h3>
+                </div>
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <label>Mode</label>
+                        <select id="trading-mode">
+                            <option value="paper" selected>Paper Trading</option>
+                            <option value="live" disabled>Live Trading</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Initial Capital ($)</label>
+                        <input type="number" id="initial-capital" value="10000" min="100" step="100">
+                    </div>
+                    <div class="setting-group">
+                        <label>Leverage</label>
+                        <select id="leverage">
+                            <option value="1" selected>1x</option>
+                            <option value="2">2x</option>
+                            <option value="3">3x</option>
+                            <option value="5">5x</option>
+                            <option value="10">10x</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button id="start-btn" class="btn btn-start">Start</button>
+                        <button id="stop-btn" class="btn btn-stop" disabled>Stop</button>
+                    </div>
+                    <div class="status-indicator">
+                        <span class="status-dot" id="status-dot"></span>
+                        <span id="status-text">Stopped</span>
+                    </div>
+                    <div class="pending-signal" id="pending-signal">
+                        Pending: <span id="pending-signal-text">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats (3) -->
+            <div class="stats-panel" id="stats-area">
+                <div class="panel-header">
+                    <h3>Statistics</h3>
+                </div>
+                <div class="stats-content">
+                    <div class="stat-item">
+                        <span class="stat-label">Equity</span>
+                        <span class="stat-value" id="stat-equity">$10,000.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total PnL</span>
+                        <span class="stat-value" id="stat-pnl">$0.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Return</span>
+                        <span class="stat-value" id="stat-return">0.00%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Trades</span>
+                        <span class="stat-value" id="stat-trades">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Win Rate</span>
+                        <span class="stat-value" id="stat-winrate">0.0%</span>
+                    </div>
+                    <div class="stat-item position-info">
+                        <span class="stat-label">Position</span>
+                        <span class="stat-value" id="stat-position">FLAT</span>
+                    </div>
+                    <div class="stat-item position-info" id="position-details" style="display:none;">
+                        <span class="stat-label">Unrealized</span>
+                        <span class="stat-value" id="stat-unrealized">$0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regimes (5) -->
+            <div class="regimes-panel" id="regimes-area">
+                <div class="panel-header">
+                    <h3>Regime History</h3>
+                </div>
+                <div class="regimes-content" id="regimes-list">
+                    <!-- Regimes will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Regime Change Trading Dashboard JavaScript
+
+        let chart = null;
+        let candleSeries = null;
+        let volumeSeries = null;
+        let regimeSeries = null;
+        let ws = null;
+        let isRunning = false;
+        let currentRegime = "UNKNOWN";
+        let lastCandleTime = null;  // Track last candle time to detect new candle
+
+        const REGIME_COLORS = {
+            "TREND_UP": "#26a69a",
+            "TREND_DOWN": "#ef5350",
+            "RANGE": "#42a5f5",
+            "TRANSITION": "#ffca28",
+            "HIGH_VOL": "#ab47bc",
+            "NO_TRADE": "#9e9e9e",
+            "UNKNOWN": "#9e9e9e",
+        };
+
+        // Semi-transparent regime colors for histogram background bars
+        const REGIME_BG_COLORS = {
+            "TREND_UP": "rgba(38, 166, 154, 0.25)",      // green
+            "TREND_DOWN": "rgba(239, 83, 80, 0.25)",    // red
+            "RANGE": "rgba(66, 165, 245, 0.25)",         // blue
+            "TRANSITION": "rgba(255, 202, 40, 0.25)",    // yellow
+            "HIGH_VOL": "rgba(171, 71, 188, 0.25)",      // purple
+            "NO_TRADE": "rgba(158, 158, 158, 0.15)",     // gray
+            "UNKNOWN": "rgba(158, 158, 158, 0.10)",      // light gray
+        };
+
+        function initChart() {
+            const chartContainer = document.getElementById('chart');
+
+            chart = LightweightCharts.createChart(chartContainer, {
+                width: chartContainer.clientWidth,
+                height: chartContainer.clientHeight - 40,
+                layout: {
+                    background: { type: 'solid', color: '#1e1e1e' },
+                    textColor: '#d1d4dc',
+                },
+                grid: {
+                    vertLines: { color: '#2e2e2e' },
+                    horzLines: { color: '#2e2e2e' },
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                },
+                rightPriceScale: {
+                    borderColor: '#3e3e3e',
+                },
+                timeScale: {
+                    borderColor: '#3e3e3e',
+                    timeVisible: true,
+                    secondsVisible: false,
+                    rightOffset: 5,
+                    shiftVisibleRangeOnNewBar: true,
+                },
+            });
+
+            // Regime background series (added first to be behind candles)
+            regimeSeries = chart.addHistogramSeries({
+                color: 'rgba(66, 165, 245, 0.15)',
+                priceFormat: { type: 'price' },
+                priceScaleId: 'regime',
+                lastValueVisible: false,
+                priceLineVisible: false,
+            });
+
+            // Configure regime price scale (hidden, full height)
+            chart.priceScale('regime').applyOptions({
+                scaleMargins: { top: 0, bottom: 0 },
+                visible: false,
+            });
+
+            candleSeries = chart.addCandlestickSeries({
+                upColor: '#26a69a',
+                downColor: '#ef5350',
+                borderDownColor: '#ef5350',
+                borderUpColor: '#26a69a',
+                wickDownColor: '#ef5350',
+                wickUpColor: '#26a69a',
+                priceFormat: {
+                    type: 'price',
+                    precision: 4,
+                    minMove: 0.0001,
+                },
+            });
+
+            volumeSeries = chart.addHistogramSeries({
+                color: '#26a69a',
+                priceFormat: {
+                    type: 'volume',
+                },
+                priceScaleId: 'volume',
+                scaleMargins: {
+                    top: 0.85,
+                    bottom: 0,
+                },
+            });
+
+            window.addEventListener('resize', () => {
+                chart.applyOptions({
+                    width: chartContainer.clientWidth,
+                    height: chartContainer.clientHeight - 40,
+                });
+            });
+        }
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            ws = new WebSocket(`${protocol}//${window.location.host}/ws`);
+
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                // Start ping interval
+                setInterval(() => {
+                    if (ws.readyState === WebSocket.OPEN) {
+                        ws.send(JSON.stringify({ type: 'ping' }));
+                    }
+                }, 30000);
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleMessage(data);
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket disconnected');
+                setTimeout(connectWebSocket, 3000);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        function handleMessage(data) {
+            switch (data.type) {
+                case 'init':
+                    handleInit(data);
+                    break;
+                case 'tick':
+                    handleTick(data);
+                    break;
+                case 'regime_change':
+                    handleRegimeChange(data.regime);
+                    break;
+                case 'trade':
+                    handleTrade(data);
+                    break;
+            }
+        }
+
+        function handleInit(data) {
+            // Set regime background data FIRST (appears behind candles)
+            if (data.regime_data && data.regime_data.length > 0) {
+                regimeSeries.setData(data.regime_data);
+            }
+
+            // Set chart data
+            if (data.chart_data && data.chart_data.length > 0) {
+                candleSeries.setData(data.chart_data);
+                // Track last candle time
+                lastCandleTime = data.chart_data[data.chart_data.length - 1].time;
+                // Scroll to show latest data after setting data
+                chart.timeScale().scrollToRealTime();
+            }
+            if (data.volume_data && data.volume_data.length > 0) {
+                volumeSeries.setData(data.volume_data);
+            }
+
+            // Store current regime
+            currentRegime = data.regime || "UNKNOWN";
+
+            // Update stats
+            updateStats(data.stats);
+
+            // Update trades
+            if (data.trades) {
+                data.trades.forEach(trade => addTradeRow(trade));
+            }
+
+            // Update regimes
+            if (data.regimes) {
+                data.regimes.forEach(regime => addRegimeItem(regime));
+            }
+
+            // Update price and regime
+            updatePrice(data.price);
+            updateRegime(data.regime, data.regime_color);
+
+            // Update running state
+            if (data.is_running) {
+                setRunningState(true);
+            }
+        }
+
+        function handleTick(data) {
+            updatePrice(data.price);
+            updateStats(data.stats);
+            updateRegime(data.regime, data.regime_color);
+
+            // Track regime change
+            const newRegime = data.regime || "UNKNOWN";
+            if (newRegime !== currentRegime) {
+                currentRegime = newRegime;
+            }
+
+            // Update pending signal
+            if (data.stats && data.stats.pending_signal) {
+                document.getElementById('pending-signal').classList.add('active');
+                document.getElementById('pending-signal-text').textContent = data.stats.pending_signal;
+            } else {
+                document.getElementById('pending-signal').classList.remove('active');
+            }
+
+            // Update chart candle
+            if (data.candle) {
+                const time = Math.floor(new Date(data.candle.timestamp).getTime() / 1000);
+                const candle = {
+                    time: time,
+                    open: data.candle.open,
+                    high: data.candle.high,
+                    low: data.candle.low,
+                    close: data.candle.close,
+                };
+                candleSeries.update(candle);
+
+                const volumeColor = data.candle.close >= data.candle.open ? '#26a69a80' : '#ef535080';
+                volumeSeries.update({
+                    time: time,
+                    value: data.candle.volume || 0,
+                    color: volumeColor,
+                });
+
+                // Update regime background for this candle
+                const regimeColor = REGIME_BG_COLORS[currentRegime] || REGIME_BG_COLORS["UNKNOWN"];
+                regimeSeries.update({
+                    time: time,
+                    value: 100,
+                    color: regimeColor,
+                });
+
+                // Auto-scroll to latest candle only when new candle starts
+                if (lastCandleTime !== null && time > lastCandleTime) {
+                    chart.timeScale().scrollToRealTime();
+                }
+                lastCandleTime = time;
+            }
+        }
+
+        function handleRegimeChange(regime) {
+            addRegimeItem(regime);
+            updateRegime(regime.regime, regime.color);
+            currentRegime = regime.regime;
+        }
+
+        function handleTrade(data) {
+            addTradeRow(data.trade);
+            updateStats(data.stats);
+        }
+
+        function updatePrice(price) {
+            if (price) {
+                document.getElementById('current-price').textContent = `$${price.toFixed(4)}`;
+            }
+        }
+
+        function updateRegime(regime, color) {
+            const badge = document.getElementById('current-regime');
+            badge.textContent = regime || '--';
+            badge.style.backgroundColor = color || '#9e9e9e';
+        }
+
+        function updateStats(stats) {
+            if (!stats) return;
+
+            document.getElementById('stat-equity').textContent = `$${stats.equity.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            const pnlElement = document.getElementById('stat-pnl');
+            pnlElement.textContent = `$${stats.total_pnl.toFixed(2)}`;
+            pnlElement.style.color = stats.total_pnl >= 0 ? '#26a69a' : '#ef5350';
+
+            const returnElement = document.getElementById('stat-return');
+            returnElement.textContent = `${stats.pnl_pct >= 0 ? '+' : ''}${stats.pnl_pct.toFixed(2)}%`;
+            returnElement.style.color = stats.pnl_pct >= 0 ? '#26a69a' : '#ef5350';
+
+            document.getElementById('stat-trades').textContent = stats.total_trades;
+            document.getElementById('stat-winrate').textContent = `${stats.win_rate.toFixed(1)}%`;
+
+            // Position
+            const posElement = document.getElementById('stat-position');
+            const posDetailsElement = document.getElementById('position-details');
+            const unrealizedElement = document.getElementById('stat-unrealized');
+
+            if (stats.position && stats.position.side !== 'FLAT') {
+                posElement.textContent = `${stats.position.side} @ $${stats.position.entry_price.toFixed(4)}`;
+                posElement.style.color = stats.position.side === 'LONG' ? '#26a69a' : '#ef5350';
+
+                posDetailsElement.style.display = 'flex';
+                const unrealized = stats.position.unrealized_pnl || 0;
+                unrealizedElement.textContent = `$${unrealized.toFixed(2)}`;
+                unrealizedElement.style.color = unrealized >= 0 ? '#26a69a' : '#ef5350';
+            } else {
+                posElement.textContent = 'FLAT';
+                posElement.style.color = '#9e9e9e';
+                posDetailsElement.style.display = 'none';
+            }
+        }
+
+        function addTradeRow(trade) {
+            const tbody = document.getElementById('trade-table-body');
+            const row = document.createElement('tr');
+
+            const time = new Date(trade.timestamp).toLocaleTimeString('ko-KR');
+            const pnlClass = trade.pnl >= 0 ? 'profit' : 'loss';
+            const sideClass = trade.side === 'LONG' ? 'long' : 'short';
+
+            row.innerHTML = `
+                <td>${time}</td>
+                <td><span class="trade-type">${trade.event_type || 'EXIT'}</span></td>
+                <td><span class="side-badge ${sideClass}">${trade.side}</span></td>
+                <td>$${trade.entry_price.toFixed(4)}</td>
+                <td>$${(trade.exit_price || 0).toFixed(4)}</td>
+                <td class="${pnlClass}">$${trade.pnl.toFixed(2)} (${trade.pnl_pct.toFixed(2)}%)</td>
+                <td class="trade-signal-col" title="${trade.signal || ''}">${trade.signal || '--'}</td>
+            `;
+
+            tbody.insertBefore(row, tbody.firstChild);
+
+            // Keep only last 50 trades
+            while (tbody.children.length > 50) {
+                tbody.removeChild(tbody.lastChild);
+            }
+        }
+
+        function addRegimeItem(regime) {
+            const container = document.getElementById('regimes-list');
+            const item = document.createElement('div');
+            item.className = 'regime-item';
+
+            const time = new Date(regime.timestamp).toLocaleTimeString('ko-KR');
+            const arrow = regime.old_regime ? `${regime.old_regime} → ` : '';
+
+            item.innerHTML = `
+                <span class="regime-time">${time}</span>
+                <span class="regime-transition">${arrow}<span class="regime-badge" style="background:${regime.color}">${regime.regime}</span></span>
+            `;
+
+            container.insertBefore(item, container.firstChild);
+
+            // Keep only last 20 regimes
+            while (container.children.length > 20) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        function setRunningState(running) {
+            isRunning = running;
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+
+            if (running) {
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                statusDot.classList.add('running');
+                statusText.textContent = 'Running';
+            } else {
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                statusDot.classList.remove('running');
+                statusText.textContent = 'Stopped';
+                document.getElementById('pending-signal').classList.remove('active');
+            }
+        }
+
+        async function startTrading() {
+            const capital = parseFloat(document.getElementById('initial-capital').value);
+            const leverage = parseFloat(document.getElementById('leverage').value);
+
+            try {
+                const response = await fetch('/api/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        initial_capital: capital,
+                        leverage: leverage,
+                        symbol: 'XRPUSDT',
+                    }),
+                });
+
+                if (response.ok) {
+                    setRunningState(true);
+                } else {
+                    alert('Failed to start trading');
+                }
+            } catch (error) {
+                console.error('Start error:', error);
+                alert('Failed to start trading');
+            }
+        }
+
+        async function stopTrading() {
+            try {
+                const response = await fetch('/api/stop', {
+                    method: 'POST',
+                });
+
+                if (response.ok) {
+                    setRunningState(false);
+                } else {
+                    alert('Failed to stop trading');
+                }
+            } catch (error) {
+                console.error('Stop error:', error);
+                alert('Failed to stop trading');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            connectWebSocket();
+
+            document.getElementById('start-btn').addEventListener('click', startTrading);
+            document.getElementById('stop-btn').addEventListener('click', stopTrading);
+        });
+    </script>
+</body>
+</html>

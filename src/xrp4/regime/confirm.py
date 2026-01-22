@@ -6,10 +6,13 @@ Implements:
 3. Priority-based regime confirmation
 """
 
+import logging
 from dataclasses import dataclass, field
 from typing import Dict, Tuple, Optional, List
 import numpy as np
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -242,6 +245,18 @@ class RegimeConfirmLayer:
         ewm_std = row_15m.get("ewm_std_ret_15m", 0.005)
         ewm_ret = row_15m.get("ewm_ret_15m", 0)
 
+        # Handle NaN values
+        if pd.isna(ema_slope):
+            ema_slope = 0
+        if pd.isna(ewm_std):
+            ewm_std = 0.005
+        if pd.isna(ewm_ret):
+            ewm_ret = 0
+
+        # Debug logging
+        logger.debug(f"[RANGE_VALIDATE] ema_slope={ema_slope:.6f}, threshold={cfg.RANGE_MAX_EMA_SLOPE:.6f}, "
+                    f"ewm_std={ewm_std:.6f}, ewm_ret={ewm_ret:.6f}")
+
         metrics = {
             "ema_slope": ema_slope,
             "ewm_std": ewm_std,
@@ -254,6 +269,7 @@ class RegimeConfirmLayer:
         # If slope is steep, this is likely a TREND
         if abs(ema_slope) > cfg.RANGE_MAX_EMA_SLOPE:
             direction = "TREND_UP" if ema_slope > 0 else "TREND_DOWN"
+            logger.info(f"[RANGE->TREND] EMA slope {ema_slope:.6f} > threshold {cfg.RANGE_MAX_EMA_SLOPE:.6f} -> {direction}")
             return ConfirmResult(
                 confirmed_regime=direction,
                 reason="RANGE_OVERRIDE_TREND_SLOPE",
