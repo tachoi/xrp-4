@@ -883,18 +883,19 @@ class RegimeChangePaperTrader:
         else:
             regime_raw = "RANGE"
 
-        # Confirm layer
+        # Confirm layer - match CLI paper_trading.py behavior
+        bar = self.df_3m.iloc[-1]
         bar_15m = self.df_15m.iloc[-1]
-        row_15m = {
-            "ema_slope_15m": bar_15m.get("ema_slope_15m", 0),
-            "ewm_ret_15m": bar_15m.get("ewm_ret_15m", 0),
-            "ewm_std_ret_15m": bar_15m.get("ewm_std_ret_15m", 0.005),
-        }
-        hist_15m = self.df_15m.tail(96)
+        hist_15m = self.df_15m.tail(20)  # Match CLI (20 bars, not 96)
+
+        # Build row_15m with full data (matching CLI)
+        row_15m_dict = bar_15m.to_dict()
+        row_15m_dict["ret_3m"] = bar.get("ret_3m", 0)  # Add 3m return for spike detection
+        row_15m_dict["ret_15m"] = bar_15m.get("ret_15m", 0)  # Add 15m return for spike detection
 
         confirm_result, self.confirm_state = self.confirm_layer.confirm(
             regime_raw=regime_raw,
-            row_15m=row_15m,
+            row_15m=row_15m_dict,
             hist_15m=hist_15m,
             state=self.confirm_state,
         )
